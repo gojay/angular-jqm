@@ -699,4 +699,47 @@ function TableCtrl(scope){
         {show:true, column:'Rating'},
         {show:true, column:'Reviews'}
     ];
+
+    scope.data = [
+        {
+            no: '1',
+            name: 'Citizen Kane',
+            link: 'http://en.wikipedia.org/wiki/Citizen_Kane',
+            year: '1941',
+            rating: '100%',
+            reviews: 74
+        },
+        {
+            no: '2',
+            name: 'Casablanca',
+            link: 'http://en.wikipedia.org/wiki/Casablanca_(film)',
+            year: '1942',
+            rating: '97%',
+            reviews: 64
+        },
+        {
+            no: '3',
+            name: 'The Godfather',
+            link: 'http://en.wikipedia.org/wiki/The_Godfather',
+            year: '1972',
+            rating: '97%',
+            reviews: 87
+        },
+        {
+            no: '4',
+            name: 'Gone with the Wind',
+            link: 'http://en.wikipedia.org/wiki/Gone_with_the_Wind_(film)',
+            year: '1939',
+            rating: '96%',
+            reviews: 87
+        },
+        {
+            no: '5',
+            name: 'Lawrence of Arabia',
+            link: 'http://en.wikipedia.org/wiki/Lawrence_of_Arabia_(film)',
+            year: '1962',
+            rating: '94%',
+            reviews: 87
+        }
+    ]
 }

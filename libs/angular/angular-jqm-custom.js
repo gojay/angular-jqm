@@ -103,6 +103,7 @@
 	        }
 	    };
 	});
+
 /*
 	jqmModuleCustom.directive('jqmSlider', function(){
 		var isDef = angular.isDefined;
@@ -638,6 +639,75 @@
 	            }
 	        }
 	    };
+	}]);
+
+	jqmModuleCustom.directive('jqmTable', ['$compile', function(compile){
+		var isDef = angular.isDefined;
+		return {
+			scope: {},
+			restrict: 'A',
+			templateUrl: 'templates/jqmTable.html',
+			replace: true,
+			transclude: true,
+			controller: ['$scope', jqmTableCtrl],
+			compile: function(elm, attr, transclude){
+				return function(scope, element, attrs){
+					scope.columns = [];
+
+					var  tblClass = isDef(attr.bodyTheme) ? 'ui-body-' + attr.bodyTheme : 'ui-body-c' ;
+					if(isDef(attr.shadow)){
+						tblClass += 'ui-shadow';
+					}
+					if(isDef(attr.type)){
+						tblClass += ' table-' + attr.type;
+					}
+
+					var headClass = isDef(attr.headTheme) ? 'ui-bar-' + attr.headTheme : 'ui-bar-c' ;
+
+				    var tableEl = angular.element(element).find('table');
+				    tableEl.addClass("ui-responsive ui-table ui-table-columntoggle " + tblClass);
+
+				    var indexes = [];
+				    angular.element(element).find('thead > tr > th').each(function(i,e){
+				    	var th = angular.element(e);
+			    		if( th.data('priority') ){
+			    			scope.columns.push({
+			    				show    : true,
+			    				priority: th.data('priority'),
+			    				column  : th.text()
+			    			});
+			    			indexes.push(i);
+			    		}
+				    });
+
+				    setTimeout(function() {
+				    	angular.element(element).find('thead > tr').each(function(i,e){
+				    		nestedNgShow(angular.element(e));
+					    });
+					    angular.element(element).find('tbody > tr').each(function(i,e){
+					    	nestedNgShow(angular.element(e));
+					    });
+				    }, 200);
+
+					function nestedNgShow(el){
+						el.children().each(function(_i,_e){	
+			    			var _e = angular.element(_e);
+			    			var index = indexes.indexOf(_i);
+			    			if(index !== -1) compileEl(_e, 'columns['+index+'].show');
+			    		});
+					}
+				    function compileEl(_e, binding){
+				    	var e_ = _e.attr('ng-show', binding);
+		    			compile(e_.parent().contents())(scope);
+		    			_e.replaceWith(e_);
+				    }
+				};
+			}
+		};
+
+		function jqmTableCtrl(scope){
+
+		}
 	}]);
 
 	jqmModuleCustom.directive('iscroll', ['$parse', function ($parse) {
