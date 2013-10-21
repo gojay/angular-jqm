@@ -1,0 +1,19 @@
+<div ng-class="{'ui-collapsible-themed-content':isCollapsed}">
+	<h3 class="ui-collapsible-heading">
+        <!-- <a href jqm-button icon="{{icon}}" ng-click="collapse()">{{header}}</a> -->
+        <div ng-switch on="iconType">
+        	<div ng-switch-when="arrow">
+        		<a href ng-if="isCollapsed" jqm-button icon="ui-icon-arrow-u" ng-click="collapse($event)">{{header}}</a>
+        		<a href ng-if="!isCollapsed" jqm-button icon="ui-icon-arrow-d" ng-click="collapse($event)">{{header}}</a>
+        	</div>
+        	<div ng-switch-default>
+        		<a href ng-if="isCollapsed" jqm-button icon="ui-icon-minus" ng-click="collapse($event)">{{header}}</a>
+        		<a href ng-if="!isCollapsed" jqm-button icon="ui-icon-plus" ng-click="collapse($event)">{{header}}</a>
+        	</div>
+        </div>
+    </h3>
+    <div class="ui-collapsible-content"
+    	 ng-class="{true:contentTheme, false:'ui-collapsible-content-collapsed'}[isCollapsed]"
+    	 ng-transclude>
+    </div>
+</div>

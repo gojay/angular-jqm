@@ -1,0 +1,122 @@
+<style>
+	.ui-content { height:100%;}
+    .ui-scroller-content{ padding: 15px; }
+</style>
+<div jqm-page>
+    <div jqm-header>
+        <a jqm-button jqm-theme="a" href="#/" icon="ui-icon-home" buttonpos="left" shadow="true">Home</a>
+        <h1>Form</h1>
+    </div>
+    <div iscroll="wrapper1" transition="true" vertical="true">
+    	<div jqm-fieldcontain>
+	    	<label class="ui-input-text">Text</label>
+		    <div jqm-textinput ng-model="data.text"></div>
+		</div>
+    	<div jqm-fieldcontain>
+	    	<label class="ui-input-text">Searxh</label>
+		    <div jqm-textinput ng-model="data.text" type="search"></div>
+		</div>
+    	<div jqm-fieldcontain>
+    		<label class="ui-input-text">Color</label>
+	    	<div jqm-textinput ng-model="data.color" type="color" style="width:50px"></div>
+	    </div>
+    	<div jqm-fieldcontain>
+	    	<label class="ui-input-text">Number</label>
+		    <div jqm-textinput ng-model="data.number" type="number"></div>
+		</div>
+    	<div jqm-fieldcontain>
+	    	<label class="ui-input-text">Date</label>
+		    <div jqm-textinput ng-model="data.date" type="date"></div>
+		</div>
+    	<div jqm-fieldcontain>
+	    	<label class="ui-input-text">Tel</label>
+		    <div jqm-textinput ng-model="data.tel" type="tel"></div>
+		</div>
+    	<div jqm-fieldcontain>
+	    	<label class="ui-input-text">Range</label>
+	    	<div jqm-slider min="1" max="10" highlight="true" ng-model="data.range"></div>
+		</div>
+    	<div jqm-fieldcontain>
+	    	<label class="ui-input-text">Switch</label>
+	    	<div jqm-flip ng-model="data.flip" on-label="On" off-label="Off"></div>
+		</div>
+	    
+    	<div jqm-fieldcontain>
+	    	<label class="ui-input-text">Textarea</label>
+		    <div jqm-textarea ng-model="data.textarea"></div>
+	    </div>
+
+    	<div jqm-fieldcontain>
+		    <div jqm-controlgroup legend="Radio Vertical">
+				<div jqm-controlgroup type="vertical">
+		            <div jqm-radio ng-model="r.selected" ng-repeat="r in data.radios">{{r.value}}</div>
+		        </div>
+		    </div>
+	    </div>
+    	<div jqm-fieldcontain>
+		    <div jqm-controlgroup type="horizontal" legend="Radio Horizontal">
+				<div jqm-controlgroup type="horizontal">
+		            <div jqm-radio ng-model="r.selected" ng-repeat="r in data.radios">{{r.value}}</div>
+		        </div>
+		    </div>
+	    </div>
+
+    	<div jqm-fieldcontain>
+		    <div jqm-controlgroup legend="Checkbox Vertical">
+				<div jqm-controlgroup type="vertical">
+		            <div jqm-checkbox ng-model="c.selected" ng-repeat="c in data.checks">{{c.value}}</div>
+		        </div>
+		    </div>
+	    </div>
+    	<div jqm-fieldcontain>
+		    <div jqm-controlgroup type="horizontal" legend="Checkbox Horizontal">
+				<div jqm-controlgroup type="horizontal">
+		            <div jqm-checkbox ng-model="c.selected" ng-repeat="c in data.checks">{{c.value}}</div>
+		        </div>
+		    </div>
+	    </div>
+
+    	<div jqm-fieldcontain>
+		    <div jqm-controlgroup type="horizontal" legend="Combobox">
+				<div jqm-controlgroup type="horizontal">
+					<div jqm-select-transclude ng-model="values.item" animation="pop">
+						<option value="">Item</option>
+						<option value="{{item}}" ng-repeat="item in data.items">{{item}}</option>
+					</div>
+					<div jqm-select-transclude ng-model="values.movie" animation="pop">
+						<option value="">Movie</option>
+						<option value="{{movie}}" ng-repeat="movie in data.movies">{{movie}}</option>
+					</div>
+					<div jqm-select-transclude ng-model="values.country">
+						<option value="">Country</option>
+						<optgroup ng-repeat="(k,group) in data.groups" label="{{k}}">
+							<option value="{{country}}" ng-repeat="country in group">{{country}}</option>
+						</optgroup>
+					</div>
+				</div>
+		    </div>
+	    </div>
+
+        <h4>Results</h4>
+		<p>{{values}}</p>
+
+		<div style="height:100px"></div>
+
+		<!-- <div jqm-controlgroup type="vertical">
+			<div jqm-select-transclude ng-model="selectedItem2" animation="pop">
+				<option value="">Choose an item</option>
+				<option value="{{item}}" ng-repeat="item in data.items">{{item}}</option>
+			</div>
+			<div jqm-select-transclude ng-model="selectedMovie" animation="pop">
+				<option value="">Choose movie</option>
+				<option value="{{movie}}" ng-repeat="movie in data.movies">{{movie}}</option>
+			</div>
+			<div jqm-select-transclude ng-model="selectedCountry">
+				<option value="">Choose your country</option>
+				<optgroup ng-repeat="(k,group) in data.groups" label="{{k}}">
+					<option value="{{country}}" ng-repeat="country in group">{{country}}</option>
+				</optgroup>
+			</div>
+		</div> -->
+    </div>
+</div>

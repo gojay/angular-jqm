@@ -1,0 +1,7 @@
+<div class="ui-slider" ng-class="{'ui-mini': mini}">
+    <input type="number" min="{{min}}" max="{{max}}" ng-model="value" class="ui-input-text ui-body-c ui-corner-all ui-shadow-inset ui-slider-input">
+    <div class="ui-slider-track ui-btn-down-c ui-btn-corner-all" ng-class="{'ui-mini': mini}">
+    	<div ng-if="highlight" class="ui-slider-bg ui-btn-active ui-btn-corner-all" ng-style="styles.highlight"></div>
+    	<div jqm-button class="ui-slider-handle" title="{{value}}" ng-style="styles.handler"></div>
+    </div>
+</div>

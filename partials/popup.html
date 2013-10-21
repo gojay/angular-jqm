@@ -1,0 +1,174 @@
+<style>
+	.ui-content{ width: auto; padding: 15px; }
+</style>
+<div jqm-page jqm-popup-target="basicPopup" jqm-popup-model="popIsShown">
+    <div jqm-header>
+        <a jqm-button jqm-theme="a" href="#/" icon="ui-icon-home" buttonpos="left" shadow="true">Home</a>
+        <h1>Popup</h1>
+    </div>
+
+    <div jqm-popup="basicPopup" jqm-theme="a" animation="pop">
+        <p>This is a completely basic popup, no options set.</p>
+    </div>
+    <div jqm-popup="themePopup" jqm-theme="e" animation="pop" style="max-width:350px">
+        <p>Here is a <strong>tiny popup</strong> being used like a tooltip. The text will wrap to multiple lines as needed.</p>
+    </div>
+    <div jqm-popup="closingPopup" dismissible="false" jqm-theme="a" ng-animate="'pop'">
+    	<a href jqm-button ng-click="close('closingPopup')" icon="ui-icon-delete" iconpos="notext" class="ui-btn-right"></a>
+        <p>I have a close button at the top right corner with simple HTML markup.</p>
+    </div>
+    <div jqm-popup="listPopup" jqm-theme="none" ng-animate="'pop'" style="width:250px">
+       <ul jqm-listview inset="true">
+            <li jqm-li-entry jqm-theme="e">Choose an action</li>
+            <li ng-repeat="i in [] | range:3"
+                jqm-li-link icon="ui-icon-arrow-r">
+                List item {{i}}
+            </li>
+        </ul>
+    </div>
+    <div jqm-popup="collapsiblePopup" jqm-theme="none" ng-animate="'pop'" style="width:300px">
+        <div jqm-collapsible-set inset="true" icon="arrow">  
+            <div jqm-controlgroup type="vertical">
+                <div jqm-collapsible header="Section Text" theme="a">
+                    <p>I'm the collapsible content for section 1</p>
+                </div>
+                <div jqm-collapsible header="Section List" theme="a">
+                    <ul jqm-listview>
+                        <li ng-repeat="i in [1,2,3]"
+                            jqm-li-link icon="ui-icon-arrow-r">
+                            Text {{i}}
+                        </li>
+                    </ul>
+                </div>
+                <div jqm-collapsible header="Section Fieldset" theme="a">
+                    Label
+                    <div jqm-textinput ng-model="text" clear-btn="true" placeholder="Text input"></div>
+                    <div jqm-controlgroup type="vertical">
+                        <div jqm-checkbox ng-model="check1">One {{check1}}</div>
+                        <div jqm-checkbox ng-model="check2">Two {{check2}}</div>
+                        <div jqm-checkbox ng-model="check3">Three {{check3}}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div jqm-popup="formPopup" jqm-theme="a" ng-animate="'pop'">
+	    <form>
+	        <div style="padding:10px 20px;">
+	            <h3>Please sign in</h3>
+	            <div jqm-textinput placeholder="username"></div>
+	            <div jqm-textinput placeholder="password"></div>
+	            <button jqm-button icon="ui-icon-check" jqm-theme="b">Sign in</button>
+	        </div>
+	    </form>
+    </div>
+    <div jqm-popup="dialogPopup" overlay-theme="a" shadow="false" corners="false" jqm-theme="none" ng-animate="'pop'" dismissible="false" style="max-width:400px">
+		<div jqm-dialog>
+		    <div jqm-header jqm-theme="a">
+		        <h1>Dialog</h1>
+		    </div>
+		    <div class="ui-content ui-body-d">
+		        <h1>Delete page?</h1>
+		        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Reiciendis, architecto.</p>
+		        <button jqm-button jqm-theme="d" ng-click="close('dialogPopup')" inline="true">Cancel</button>
+		        <button href jqm-button jqm-theme="b" inline="true">Delete</button>
+		    </div>
+		</div>
+	</div> 	
+    <div jqm-popup="imgParisPopup" dismissible="false" corners="false" jqm-theme="a" ng-animate="'pop'">
+    	<a href jqm-button ng-click="close('imgParisPopup')" icon="ui-icon-delete" iconpos="notext" class="ui-btn-right"></a>
+        <img class="popphoto" src="http://localhost/jquery-mobile/jquery-mobile-1.3.2/demos/_assets/img/paris.jpg" alt="Paris, France" style="max-height:512px;">
+    </div>
+    <div jqm-popup="imgSydneyPopup" dismissible="false" corners="false" jqm-theme="a" ng-animate="'pop'">
+    	<a href jqm-button ng-click="close('imgSydneyPopup')" icon="ui-icon-delete" iconpos="notext" class="ui-btn-right"></a>
+	     <img class="popphoto" src="http://localhost/jquery-mobile/jquery-mobile-1.3.2/demos/_assets/img/sydney.jpg" alt="Sydney, Australia" style="max-height:512px;">
+    </div>
+    <div jqm-popup="imgNewYorkPopup" dismissible="false" corners="false" jqm-theme="a" ng-animate="'pop'">
+    	<a href jqm-button ng-click="close('imgNewYorkPopup')" icon="ui-icon-delete" iconpos="notext" class="ui-btn-right"></a>
+	     <img class="popphoto" src="http://localhost/jquery-mobile/jquery-mobile-1.3.2/demos/_assets/img/newyork.jpg" alt="NewYork, USA" style="max-height:512px;">
+    </div>
+
+    <!-- Popup button -->
+    
+    <div jqm-button jqm-theme="b" ng-click="popIsShown = true">
+      	Popup on the page
+    </div>
+    <div jqm-button jqm-theme="b" jqm-popup-target="themePopup" jqm-popup-model="buttonPopup" ng-click="buttonPopup = true">
+      	Popup on the button
+    </div>
+    <div>
+	    <div jqm-button inline="true" jqm-theme="b" 
+	    	jqm-popup-target="closingPopup" 
+	    	jqm-popup-model="buttonClosingPopup" 
+	    	ng-click="buttonClosingPopup = true">
+	      	Closing Popup
+	    </div>
+	    <div jqm-button inline="true" jqm-theme="b" 
+		    jqm-popup-target="basicPopup" 
+		    jqm-popup-model="buttonPopupR" 
+		    jqm-popup-placement="right" 
+		    ng-click="buttonPopupR = true">
+	      	Popup on the button (Right)
+	    </div>
+	    <div align="right" jqm-button buttonpos="right" jqm-theme="b" 
+		    jqm-popup-target="basicPopup" 
+		    jqm-popup-model="buttonPopupL" 
+		    jqm-popup-placement="left" 
+		    ng-click="buttonPopupL = true">
+	      	Popup on the button (Left)
+	    </div>
+    </div>
+    <div>
+	    <div jqm-button jqm-theme="e" inline="true" icon="ui-icon-gear"
+		    jqm-popup-target="listPopup" 
+		    jqm-popup-model="buttonPopupList" 
+		    ng-click="buttonPopupList = true">
+	      	Actions Popup
+	    </div>
+	    <div jqm-button jqm-theme="a" inline="true" icon="ui-icon-bars" 
+		    jqm-popup-target="collapsiblePopup" 
+		    jqm-popup-model="buttonPopupNested" 
+		    ng-click="buttonPopupNested = true">
+	      	Nested Popup (Collapsible)
+	    </div>
+    </div>
+    <div>
+	    <div jqm-button jqm-theme="a" icon="ui-icon-check" 
+		    jqm-popup-target="formPopup" 
+		    jqm-popup-model="buttonPopupForm" 
+		    ng-click="buttonPopupForm = true">
+	      	Form Popup
+	    </div>
+	    <div jqm-button jqm-theme="a" icon="ui-icon-delete" 
+		    jqm-popup-target="dialogPopup" 
+		    jqm-popup-model="buttonPopupDialog" 
+		    ng-click="buttonPopupDialog = true">
+	      	Dialog Popup
+	    </div>
+    </div>
+    <div style="padding: 1.2em 0;">
+    	<h3>Photo lightbox</h3>
+	    <a href
+		    jqm-popup-target="imgParisPopup" 
+		    jqm-popup-model="buttonimgParisPopup" 
+		    jqm-popup-placement="center" 
+		    ng-click="buttonimgParisPopup = true">
+	      	<img class="popphoto" src="http://localhost/jquery-mobile/jquery-mobile-1.3.2/demos/_assets/img/paris.jpg" alt="Paris, France" style="width:30%">
+	    </a>
+	    <a href
+		    jqm-popup-target="imgSydneyPopup" 
+		    jqm-popup-model="buttonimgSydneyPopup" 
+		    jqm-popup-placement="center" 
+		    ng-click="buttonimgSydneyPopup = true">
+	      	<img class="popphoto" src="http://localhost/jquery-mobile/jquery-mobile-1.3.2/demos/_assets/img/sydney.jpg" alt="Sydney, Australia" style="width:30%">
+	    </a>
+	    <a href
+		    jqm-popup-target="imgNewYorkPopup" 
+		    jqm-popup-model="buttonimgNewYorkPopup" 
+		    jqm-popup-placement="center" 
+		    ng-click="buttonimgNewYorkPopup = true">
+	      	<img class="popphoto" src="http://localhost/jquery-mobile/jquery-mobile-1.3.2/demos/_assets/img/newyork.jpg" alt="NewYork, USA" style="width:30%">
+	    </div>
+    </div>
+
+</div>

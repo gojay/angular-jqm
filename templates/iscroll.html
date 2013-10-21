@@ -1,0 +1,13 @@
+<div>
+    <div ng-class="scroller">
+        <div ng-if="pullRefresh" class="pullDown">
+            <span class="pullDownIcon"></span>
+            <span class="pullDownLabel">Pull down to refresh...</span>
+        </div>
+        <div class="ui-scroller-content" ng-transclude style="height:100%;"></div>  
+        <div ng-if="pullRefresh" class="pullUp">
+            <span class="pullUpIcon"></span>
+            <span class="pullUpLabel">Pull up to refresh...</span>
+        </div>
+    </div>
+</div>

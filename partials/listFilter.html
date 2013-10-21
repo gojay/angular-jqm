@@ -1,0 +1,18 @@
+<div id="list-page" jqm-page>
+	<div jqm-header>
+        <a jqm-button jqm-theme="a" href="#/list" icon="ui-icon-back" iconpos="notext" iconshadow="true" buttonpos="left" shadow="false"></a>
+        <h1>List Filter</h1>
+    </div>
+
+    <div class="segmented-control ui-bar-d">
+		<div jqm-textinput ng-model="search" type="search"></div>
+    </div>
+
+    <ul jqm-listview ng-repeat="group in groups" id="list-{{$index}}">
+    	<li jqm-li-divider jqm-theme="a">{{group.name}}</li>
+    	<li ng-repeat="material in materials | filter:filterByGroup(group) | filter:search"
+    		jqm-li-link icon="ui-icon-arrow-r">
+			<h4 class="ui-li-heading">{{material.name}}</h4>
+    	</li>
+    </ul>
+</div>

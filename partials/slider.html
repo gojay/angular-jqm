@@ -1,0 +1,35 @@
+<style>
+	.ui-content { height:100%;}
+</style>
+<div jqm-page>
+    <div jqm-header>
+        <a jqm-button jqm-theme="a" href="#/" icon="ui-icon-home" buttonpos="left" shadow="true">Home</a>
+        <h1>Slider</h1>
+    </div>
+    <div style="padding:15px">
+
+        <h4>Label, Step 0.1 & Theme</h4>
+        <label>Slider:</label>
+        <div jqm-slider min="0" max="10" step=".1" theme="b" ng-model="slider1"></div>
+
+        <p>{{slider1}}</p>
+
+        <h4>Label Hidden, Step 5 & Highlight</h4>
+        <label class="ui-hidden-accessible">Slider:</label>
+        <div jqm-slider min="5" max="50" step="5" highlight="true" ng-model="slider2"></div>
+
+        <p>{{slider2}}</p>
+
+        <h4>Mini, Highlight & Theme</h4>
+        <div jqm-slider min="0" max="100" step="5" mini="true" highlight="true" theme="e" ng-model="slider3"></div>
+
+        <p>{{slider3}}</p>
+
+        <h4>Range Slider : Label Hidden, Step .5, Theme & Highlight</h4>
+        <div jqm-rangeslider min="0" max="20" step=".5" highlight="true">
+            <div jqm-slider theme="a" ng-model="sliders"></div>
+        </div>
+
+        <p>{{sliders}}</p>
+    </div>
+</div>

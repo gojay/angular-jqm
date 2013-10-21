@@ -1,0 +1,91 @@
+<!-- Another page -->
+<div id="list-page" jqm-page>
+    <div jqm-header>
+        <a jqm-button jqm-theme="a" href="#/" icon="ui-icon-home" buttonpos="left" shadow="true">Home</a>
+        <h1>Page2</h1>
+        <a jqm-button jqm-theme="b" href="#/" icon="ui-icon-home" iconpos="notext" buttonpos="right" shadow="false">Home</a>
+    </div>
+
+    <div class="segmented-control ui-bar-d">
+        <div jqm-controlgroup type="horizontal">
+          <a href jqm-button mini="true" jqm-theme="d" ng-click class="ui-control-active">One</a>
+          <a href jqm-button mini="true" jqm-theme="d" ng-click class="ui-control-inactive">Two</a>
+          <a href jqm-button mini="true" jqm-theme="d" ng-click class="ui-control-inactive">Three</a>
+        </div>
+    </div>
+
+    <!-- <a jqm-button href="#/">To page1</a> -->
+
+    <ul jqm-listview>
+    	<li jqm-li-divider jqm-theme="a">List Theme A</li>
+    	<li ng-repeat="i in [1,2,3]"
+    		jqm-li-link icon="ui-icon-arrow-r">
+			<img src="http://placekitten.com/80/80" jqm-li-thumb />
+			<h4 class="ui-li-heading">Kitten</h4>
+			<p class="ui-li-desc">Description here..</p>
+			<span jqm-li-count>44</span>
+    	</li>
+    </ul>
+    <ul jqm-listview>
+    	<li jqm-li-divider jqm-theme="b">List Theme B</li>
+    	<li ng-repeat="i in [1,2,3]"
+    		jqm-li-link icon="ui-icon-arrow-r">
+			<img src="http://placekitten.com/80/80" jqm-li-thumb />
+			<h4 class="ui-li-heading">Kitten</h4>
+			<p class="ui-li-desc">Description here..</p>
+			<span jqm-li-count>44</span>
+    	</li>
+    </ul>
+    <ul jqm-listview>
+    	<li jqm-li-divider jqm-theme="c">List Theme C</li>
+    	<li ng-repeat="i in [1,2,3]"
+    		jqm-li-link icon="ui-icon-arrow-r">
+			<img src="http://placekitten.com/80/80" jqm-li-thumb />
+			<h4 class="ui-li-heading">Kitten</h4>
+			<p class="ui-li-desc">Description here..</p>
+			<span jqm-li-count>44</span>
+    	</li>
+    </ul>
+    <ul jqm-listview>
+    	<li jqm-li-divider jqm-theme="d">List Theme D</li>
+    	<li ng-repeat="i in [1,2,3]"
+    		jqm-li-link icon="ui-icon-arrow-r">
+			<img src="http://placekitten.com/80/80" jqm-li-thumb />
+			<h4 class="ui-li-heading">Kitten</h4>
+			<p class="ui-li-desc">Description here..</p>
+			<span jqm-li-count>44</span>
+    	</li>
+    </ul>
+    <ul jqm-listview inset="true">
+    	<li jqm-li-divider jqm-theme="e">List Theme E</li>
+    	<li ng-repeat="i in [1,2,3]"
+    		jqm-li-link icon="ui-icon-arrow-r">
+			<img src="http://placekitten.com/80/80" jqm-li-thumb />
+			<h4 class="ui-li-heading">Kitten</h4>
+			<p class="ui-li-desc">Description here..</p>
+			<span jqm-li-count>44</span>
+    	</li>
+    </ul>
+</div>
+<div jqm-footer jqm-theme="a">
+    <div class="tabbar ui-navbar">
+        <ul class="ui-grid-b">
+            <li class="ui-block-a">
+                <a href id="home"
+                    jqm-button jqm-theme="a" 
+                    icon="ui-icon-custom" iconpos="top" corners="false">Home</a>
+            </li>
+            <li class="ui-block-b">
+                <a href id="movies" class="ui-btn-active" 
+                    jqm-button jqm-theme="a" 
+                    icon="ui-icon-custom" iconpos="top" corners="false">Movies</a>
+            </li>
+            <li class="ui-block-c">
+                <a href id="theatres" 
+                    jqm-button jqm-theme="a" 
+                    icon="ui-icon-custom" iconpos="top" corners="false">Theatres</a>
+            </li>
+        </ul>
+    </div>
+    <!-- <h1>Fixed Footer</h1> -->
+</div>

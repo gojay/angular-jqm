@@ -1,0 +1,91 @@
+<style>
+.ui-content{
+	height: 100%;
+}
+/* Left panel 90% */
+
+#panel-page .ui-panel-position-left {
+	width: 90%;
+}
+#panel-page .ui-panel-animate.ui-panel-content-wrap-position-left.ui-panel-content-wrap-open.ui-panel-content-wrap-display-reveal {
+	left: 0;
+	right: 0;
+	-webkit-transform: translate3d(90%,0,0);
+	-moz-transform: translate3d(90%,0,0);
+	transform: translate3d(90%,0,0);
+}
+
+/* Right panel 50% */
+
+#panel-page .ui-panel-position-right {
+	width: 50%;
+}
+#panel-page .ui-panel-animate.ui-panel-content-wrap-position-right.ui-panel-content-wrap-open.ui-panel-content-wrap-display-reveal {
+	left: 0;
+	right: 0;
+	-webkit-transform: translate3d(-50%,0,0);
+	-moz-transform: translate3d(-50%,0,0);
+	transform: translate3d(-50%,0,0);
+}
+
+/* Styling of the close button in both panels.
+.ui-panel-inner > .ui-listview .ui-first-child {
+	background: #eee;
+}*/
+
+/* Nav panels */
+
+/* Reveal menu shadow on top of the list items */
+#panel-page .ui-panel-display-reveal {
+	-webkit-box-shadow: none;
+	-moz-box-shadow: none;
+	box-shadow: none;
+}
+
+#panel-page .ui-panel-content-fixed-toolbar-position-left.ui-panel-content-fixed-toolbar-open,
+#panel-page .ui-panel-content-wrap-position-left.ui-panel-content-wrap-open {
+	-webkit-box-shadow: -5px 0 5px rgba(0,0,0,.10);
+	-moz-box-shadow: -5px 0 5px rgba(0,0,0,.10);
+	box-shadow: -5px 0 5px rgba(0,0,0,.10);
+}
+</style>
+<div id="panel-page" jqm-page>
+	<div jqm-panel-container="state.openPanel">
+		<div class="ui-body-b">
+			<div jqm-header jqm-theme="b">
+				<div jqm-button jqm-theme="b" 
+					 icon="ui-icon-bars" iconpos="notext" buttonpos="left" shadow="true"
+					 ng-click="state.openPanel='left'"></div>
+				<h1>Panel</h1>
+		        <div jqm-button jqm-theme="b" 
+		        	 icon="ui-icon-bars" iconpos="notext" buttonpos="right" shadow="false"
+		        	 ng-click="state.openPanel='right'"></div>
+			</div>
+			<div class="panel-content" style="height:100%"></div>
+		</div>
+		<div jqm-panel position="left" jqm-theme="e">
+			<div jqm-theme="e">
+				<ul jqm-listview>
+			    	<li ng-repeat="i in [1,2,3]"
+			    		jqm-li-link icon="ui-icon-arrow-r">
+						Link {{i}}
+			    	</li>
+			    </ul>
+			</div>
+        </ul>
+		</div>
+		<div jqm-panel position="right" display="overlay" jqm-theme="a">
+			<div jqm-header style="left:0">
+				<h1>Right Panel Overlay</h1>
+			</div>
+			<div style="position:relative; top:42px" jqm-theme="a">
+				<ul jqm-listview>
+			    	<li ng-repeat="i in [1,2,3]"
+			    		jqm-li-link icon="ui-icon-arrow-r">
+						Link {{i}}
+			    	</li>
+			    </ul>
+		    </div>
+		</div>
+	</div>
+</div>

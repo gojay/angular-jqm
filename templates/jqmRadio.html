@@ -1,0 +1,18 @@
+<div jqm-scope-as="jqmRadio"
+     class="ui-radio" jqm-class="{'ui-disabled': $scopeAs.jqmRadio.disabled}">
+    <label jqm-class="{'ui-radio-on': $scopeAs.jqmRadio.checked, 'ui-radio-off': !$scopeAs.jqmRadio.checked,
+           'ui-first-child': $scopeAs.jqmRadio.$position.first, 'ui-last-child': $scopeAs.jqmRadio.$position.last,
+           'ui-mini':$scopeAs.jqmRadio.isMini(), 'ui-fullsize':!$scopeAs.jqmRadio.isMini(),
+           'ui-btn-active':$scopeAs.jqmRadio.isActive(),
+           'ui-btn-icon-left': $scopeAs.jqmRadio.getIconPos()!='right', 'ui-btn-icon-right': $scopeAs.jqmRadio.getIconPos()=='right'}"
+           ng-click="$scopeAs.jqmRadio.toggleChecked()"
+           jqm-once-class="ui-btn-up-{{$scopeAs.jqmRadio.$theme}}"
+           class="ui-btn ui-btn-corner-all">
+        <span class="ui-btn-inner">
+            <span class="ui-btn-text" ng-transclude></span>
+            <span jqm-class="{'ui-icon-radio-on': $scopeAs.jqmRadio.checked, 'ui-icon-radio-off': !$scopeAs.jqmRadio.checked}"
+                  class="ui-icon ui-icon-shadow"></span>
+        </span>
+    </label>
+    <input type="radio" ng-model="$scopeAs.jqmRadio.checked">
+</div>

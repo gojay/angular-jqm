@@ -1,0 +1,140 @@
+<style type="text/css">
+    .tab {
+        float: left;
+        -webkit-transform:translate3d(0,0,0);
+        height: 100%;
+    }
+
+    #pageWrapper {
+        position:absolute;
+        z-index:1;
+        overflow:hidden;
+        top:41px;
+        right:0;
+        bottom:0;
+        left:0;
+    }
+
+    #pageScroller,
+    .pageScroller {
+        height: 100%;
+    }
+
+    div[id^='wrapper'],
+    .iscroll-wrapper {
+        position:absolute;
+        z-index:1;
+        top:0px;
+        bottom:0px;
+        left:0px;
+        right:0px;
+        overflow:auto;
+    }
+
+    .scroller {
+        position:absolute; z-index:1;
+        -webkit-tap-highlight-color:rgba(0,0,0,0);
+        width:100%;
+        padding:0;
+    }
+    .borderNavbar{
+        position:relative;
+        height:2px;
+        background:red;
+        width:33.33%;
+    }
+</style>
+<div id="list-page" jqm-page>
+    <div jqm-footer jqm-theme="a">
+        <div class="tabbar ui-navbar">
+            <div class="borderNavbar" ng-style="barTranslate"></div>
+            <ul class="ui-grid-b">
+                <li ng-class="{0:'ui-block-a', 1:'ui-block-b', 2:'ui-block-c'}[$index]" ng-repeat="tab in tabs">
+                    <a href id="home" ng-class="{'ui-btn-active': tab.selected}" 
+                        jqm-button jqm-theme="a" 
+                        icon="ui-icon-star" iconpos="top" corners="false"
+                        ng-click="setTab($index)">{{tab.title}}</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div jqm-header>
+        <a jqm-button jqm-theme="a" href="#/" icon="ui-icon-home" buttonpos="left" shadow="true">Home</a>
+        <h1>List View</h1>
+        <a jqm-button jqm-theme="b" href="#/filter" icon="ui-icon-search" iconpos="right" buttonpos="right" shadow="false">Filter</a>
+        <div class="segmented-control ui-bar-d">
+            <div jqm-controlgroup type="horizontal">
+              <a href jqm-button mini="true" jqm-theme="d" ng-click="setF(0)" ng-class="{true:'ui-control-active', false:'ui-control-inactive'}[f==0]">All</a>
+              <a href jqm-button mini="true" jqm-theme="d" ng-click="setF(6)" ng-class="{true:'ui-control-active', false:'ui-control-inactive'}[f==6]">>= 6</a>
+              <a href jqm-button mini="true" jqm-theme="d" ng-click="setF(15)" ng-class="{true:'ui-control-active', false:'ui-control-inactive'}[f==15]">>= 15</a>
+            </div>
+        </div>
+    </div>
+
+    <div id="pageWrapper">
+        <div id="pageScroller"> 
+        <iscroll id="pageWrapper" scroller="pageScroller" parent="$parent" snap="true" on-scroll-move="onScrollMove()" on-scroll-end="onScrollEnd()">
+            <div class="tab" ng-class="{'tabActive':tabs[0].selected}">
+                <div id="wrapper1">
+                    <div class="scroller">
+                        <div class="pullDown">
+                            <span class="pullDownIcon"></span><span class="pullDownLabel">Pull down to refresh...</span>
+                        </div>
+                        <ul jqm-listview>
+                            <li jqm-li-divider jqm-theme="a">Simple</li>
+                            <li ng-repeat="i in [] | range:20 | fb:f"
+                                jqm-li-link icon="ui-icon-arrow-r">
+                                List item {{i}}
+                            </li>
+                        </ul>
+                        <div class="pullUp">
+                            <span class="pullUpIcon"></span><span class="pullUpLabel">Pull up to refresh...</span>
+                        </div>
+                    </div>
+                </div>  
+            </div>
+            <div class="tab" ng-class="{'tabActive':tabs[1].selected}">
+                <div id="wrapper2">
+                    <div class="scroller">
+                        <div class="pullDown">
+                            <span class="pullDownIcon"></span><span class="pullDownLabel">Pull down to refresh...</span>
+                        </div>
+                        <ul jqm-listview>
+                            <li jqm-li-divider jqm-theme="a">Description</li>
+                            <li ng-repeat="i in [] | range:10 | fb:f"
+                                jqm-li-link icon="ui-icon-arrow-r">
+                                <h4 class="ui-li-heading">Kitten {{i}}</h4>
+                                <p class="ui-li-desc">Description here..</p>
+                            </li>
+                        </ul>
+                        <div class="pullUp">
+                            <span class="pullUpIcon"></span><span class="pullUpLabel">Pull up to refresh...</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="tab" ng-class="{'tabActive':tabs[2].selected}">
+                <div id="wrapper3">
+                    <div class="scroller">
+                        <div class="pullDown">
+                            <span class="pullDownIcon"></span><span class="pullDownLabel">Pull down to refresh...</span>
+                        </div>
+                        <ul jqm-listview>
+                            <li jqm-li-divider jqm-theme="c">Custom</li>
+                            <li ng-repeat="i in [] | range:10 | fb:f"
+                                jqm-li-link icon="ui-icon-arrow-r">
+                                <img src="http://placekitten.com/80/80" jqm-li-thumb />
+                                <h4 class="ui-li-heading">Kitten</h4>
+                                <p class="ui-li-desc">Description here..</p>
+                                <span jqm-li-count>44</span>
+                            </li>
+                        </ul>
+                        <div class="pullUp">
+                            <span class="pullUpIcon"></span><span class="pullUpLabel">Pull up to refresh...</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

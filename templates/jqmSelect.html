@@ -1,0 +1,4 @@
+<div ng-class="{'ui-select':isNative}">
+	<div jqm-button icon="ui-icon-arrow-d" iconpos="right">{{selected}}</div>
+	<select ng-show="isNative" ng-model="selected" ng-options="item for item in items"></select>
+</div>

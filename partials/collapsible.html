@@ -1,0 +1,188 @@
+<style>
+    .ui-scroller-content{ padding: 15px; }
+</style>
+<div jqm-page>
+    <div jqm-footer jqm-theme="a">
+        <h1>Fixed Footer</h1>
+    </div>
+    <div jqm-header>
+        <a jqm-button jqm-theme="a" href="#/" icon="ui-icon-home" buttonpos="left" shadow="true">Home</a>
+        <h1>Collapsible</h1>
+    </div>
+
+    <div iscroll="wrapper1" transition="true" vertical="true">
+
+        <h4>Basic</h4>
+
+        <div jqm-collapsible-set inset="true" basic="true">
+            <div jqm-collapsible header="Section Basic Single">
+                <p>I'm the collapsible content for section single</p>
+            </div>  
+        </div>
+
+        <h4>Theme</h4>
+
+        <div jqm-collapsible-set inset="true">
+            <div jqm-collapsible header="Section Single Text" theme="a" content-theme="a">
+                <p>I'm the collapsible content for section single</p>
+            </div>  
+        </div>
+
+        <div jqm-collapsible-set inset="true">
+            <div jqm-collapsible header="Section Single List" theme="e" content-theme="e">
+                <ul jqm-listview>
+                    <li ng-repeat="i in [1,2,3]"
+                        jqm-li-link icon="ui-icon-arrow-r">
+                        Text {{i}}
+                    </li>
+                </ul>
+            </div>  
+        </div>
+
+        <div jqm-collapsible-set inset="true">
+            <div jqm-collapsible header="Section Single Fieldset" theme="b" content-theme="c">
+                Label
+                <div jqm-textinput ng-model="text" clear-btn="true" placeholder="Text input"></div>
+                <div jqm-controlgroup type="vertical">
+                    <div jqm-checkbox ng-model="check1">One {{check1}}</div>
+                    <div jqm-checkbox ng-model="check2">Two {{check2}}</div>
+                    <div jqm-checkbox ng-model="check3">Three {{check3}}</div>
+                </div>
+            </div>  
+        </div>
+
+        <h4>Group</h4>
+
+        <div jqm-collapsible-set inset="true" icon="arrow">  
+            <div jqm-controlgroup type="vertical">
+                <div jqm-collapsible header="Section Text" theme="a">
+                    <p>I'm the collapsible content for section 1</p>
+                </div>
+                <div jqm-collapsible header="Section List" theme="a">
+                    <ul jqm-listview>
+                        <li ng-repeat="i in [1,2,3]"
+                            jqm-li-link icon="ui-icon-arrow-r">
+                            Text {{i}}
+                        </li>
+                    </ul>
+                </div>
+                <div jqm-collapsible header="Section Fieldset" theme="a">
+                    Label
+                    <div jqm-textinput ng-model="text" clear-btn="true" placeholder="Text input"></div>
+                    <div jqm-controlgroup type="vertical">
+                        <div jqm-checkbox ng-model="check1">One {{check1}}</div>
+                        <div jqm-checkbox ng-model="check2">Two {{check2}}</div>
+                        <div jqm-checkbox ng-model="check3">Three {{check3}}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- <h4>Non Inset</h4> -->
+
+        <div jqm-collapsible-set>
+            <div jqm-collapsible header="Section Single Text" theme="a" content-theme="a">
+                <p>I'm the collapsible content for section single</p>
+            </div>  
+        </div>
+
+        <div jqm-collapsible-set icon="arrow">  
+            <div jqm-controlgroup type="vertical">
+                <div jqm-collapsible header="Section Text" theme="b" content-theme="b">
+                    <p>I'm the collapsible content for section 1</p>
+                </div>
+                <div jqm-collapsible header="Section List" theme="a" content-theme="c">
+                    <ul jqm-listview>
+                        <li ng-repeat="i in [1,2,3]"
+                            jqm-li-link icon="ui-icon-arrow-r">
+                            Text {{i}}
+                        </li>
+                    </ul>
+                </div>
+                <div jqm-collapsible header="Section Fieldset" theme="b" content-theme="e">
+                    Label
+                    <div jqm-textinput ng-model="text" clear-btn="true" placeholder="Text input"></div>
+                    <div jqm-controlgroup type="vertical">
+                        <div jqm-checkbox ng-model="check1">One {{check1}}</div>
+                        <div jqm-checkbox ng-model="check2">Two {{check2}}</div>
+                        <div jqm-checkbox ng-model="check3">Three {{check3}}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div jqm-collapsible-set icon="arrow">  
+            <div jqm-controlgroup type="vertical">
+                <div jqm-collapsible header="Section Text" theme="b" content-theme="b">
+                    <p>I'm the collapsible content for section 1</p>
+                </div>
+                <div jqm-collapsible header="Section List" theme="a" content-theme="c">
+                    <ul jqm-listview>
+                        <li ng-repeat="i in [1,2,3]"
+                            jqm-li-link icon="ui-icon-arrow-r">
+                            Text {{i}}
+                        </li>
+                    </ul>
+                </div>
+                <div jqm-collapsible header="Section Fieldset" theme="b" content-theme="e">
+                    Label
+                    <div jqm-textinput ng-model="text" clear-btn="true" placeholder="Text input"></div>
+                    <div jqm-controlgroup type="vertical">
+                        <div jqm-checkbox ng-model="check1">One {{check1}}</div>
+                        <div jqm-checkbox ng-model="check2">Two {{check2}}</div>
+                        <div jqm-checkbox ng-model="check3">Three {{check3}}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div jqm-collapsible-set icon="arrow">  
+            <div jqm-controlgroup type="vertical">
+                <div jqm-collapsible header="Section Text" theme="b" content-theme="b">
+                    <p>I'm the collapsible content for section 1</p>
+                </div>
+                <div jqm-collapsible header="Section List" theme="a" content-theme="c">
+                    <ul jqm-listview>
+                        <li ng-repeat="i in [1,2,3]"
+                            jqm-li-link icon="ui-icon-arrow-r">
+                            Text {{i}}
+                        </li>
+                    </ul>
+                </div>
+                <div jqm-collapsible header="Section Fieldset" theme="b" content-theme="e">
+                    Label
+                    <div jqm-textinput ng-model="text" clear-btn="true" placeholder="Text input"></div>
+                    <div jqm-controlgroup type="vertical">
+                        <div jqm-checkbox ng-model="check1">One {{check1}}</div>
+                        <div jqm-checkbox ng-model="check2">Two {{check2}}</div>
+                        <div jqm-checkbox ng-model="check3">Three {{check3}}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div jqm-collapsible-set icon="arrow">  
+            <div jqm-controlgroup type="vertical">
+                <div jqm-collapsible header="Section Text" theme="b" content-theme="b">
+                    <p>I'm the collapsible content for section 1</p>
+                </div>
+                <div jqm-collapsible header="Section List" theme="a" content-theme="c">
+                    <ul jqm-listview>
+                        <li ng-repeat="i in [1,2,3]"
+                            jqm-li-link icon="ui-icon-arrow-r">
+                            Text {{i}}
+                        </li>
+                    </ul>
+                </div>
+                <div jqm-collapsible header="Section Fieldset" theme="b" content-theme="e">
+                    Label
+                    <div jqm-textinput ng-model="text" clear-btn="true" placeholder="Text input"></div>
+                    <div jqm-controlgroup type="vertical">
+                        <div jqm-checkbox ng-model="check1">One {{check1}}</div>
+                        <div jqm-checkbox ng-model="check2">Two {{check2}}</div>
+                        <div jqm-checkbox ng-model="check3">Three {{check3}}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

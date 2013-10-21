@@ -1,0 +1,43 @@
+<style type="text/css">
+        
+    .ui-content {
+        height: 100%;
+    }
+
+    #carouselWrapper {
+        position:absolute;
+        z-index:1;
+        overflow:visible !important;
+        top:41px;
+        right:0;
+        bottom:0;
+        left:0;
+
+        /*border-top: 3px solid;
+        width:309px;
+        margin: 0 auto;*/
+    }
+
+    .carouselScroller {
+        height: 100%;
+    }
+    
+    .tab {
+        float: left;
+        -webkit-transform:translate3d(0,0,0);
+        height: 100%;
+    }
+</style>
+<div jqm-page>
+    <div jqm-header>
+        <a jqm-button jqm-theme="a" href="#/" icon="ui-icon-home" buttonpos="left" shadow="true">Home</a>
+        <h1>Carousel</h1>
+    </div>
+
+    <div iscroll="carouselWrapper" scroller="carouselScroller" snap="true" momentum="true"
+    	on-scroll-move="onScrollMove()" on-scroll-end="onScrollEnd()">
+    	<div class="tab" ng-repeat="image in images" ng-class="{'active':image.selected}">
+            <img ng-src="{{image.url}}" style="width:100%">
+        </div>
+    </div>
+</div>

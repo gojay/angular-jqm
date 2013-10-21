@@ -1,0 +1,22 @@
+<div ng-class="{'ui-mini': mini, 'ui-rangeslider': isrange, 'ui-slider': !isrange}">
+    <div ng-switch on="isrange">
+    	<div ng-switch-when="true">
+    		<input type="number" min="{{min}}" max="{{max}}" ng-model="value.min" class="ui-input-text ui-body-c ui-corner-all ui-shadow-inset ui-slider-input ui-rangeslider-first">
+    		<input ng-if="isrange" type="number" min="{{min}}" max="{{max}}" ng-model="value.max" class="ui-input-text ui-body-c ui-corner-all ui-shadow-inset ui-slider-input ui-rangeslider-last">
+    		<div class="ui-rangeslider-sliders">
+			    <div class="ui-slider-track ui-btn-down-c ui-btn-corner-all" ng-class="{'ui-mini': mini}">
+			    	<div ng-if="highlight" class="ui-slider-bg ui-btn-active ui-btn-corner-all show" ng-style="styles.highlight"></div>
+			    	<div jqm-button class="ui-slider-handle" title="{{value.min}}" ng-style="styles.handler.min"></div>
+			    	<div jqm-button class="ui-slider-handle" title="{{value.max}}" ng-style="styles.handler.max"></div>
+			    </div>
+		    </div>
+    	</div>
+    	<div ng-switch-default>
+    		<input type="number" min="{{min}}" max="{{max}}" ng-model="value" class="ui-input-text ui-body-c ui-corner-all ui-shadow-inset ui-slider-input">
+    		<div class="ui-slider-track ui-btn-down-c ui-btn-corner-all" ng-class="{'ui-mini': mini}">
+    			<div ng-if="highlight" class="ui-slider-bg ui-btn-active ui-btn-corner-all" ng-style="styles.highlight"></div>
+	    		<div jqm-button class="ui-slider-handle" title="{{value}}" ng-style="styles.handler"></div>
+    		</div>
+    	</div>
+    </div>
+</div>
