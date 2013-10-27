@@ -391,8 +391,8 @@ function listFilterCtrl($scope, $timeout){
 function PanelCtrl($scope, $document, $swipe, $timeout){
     var startCoords;
     var width = $document[0].width,
-        boundL = parseInt(10/100*width), // 50%
-        boundR = parseInt(90/100*width), // 50%
+        boundL = parseInt(30/100*width), // 50%
+        boundR = parseInt(70/100*width), // 50%
         minBoundLeft = parseInt(30/100*width); // 3%
 
     $scope.state = {};
@@ -477,6 +477,10 @@ function PanelCtrl($scope, $document, $swipe, $timeout){
 
                 panelPosition = ( $panel ) ? $panel.get(0).className : 'null';
                 $scope.handle = {
+                    width  : width,
+                    boundL : boundL,
+                    boundR : boundR,
+                    enableSwipe: enableSwipe,
                     event  : 'swipe',
                     action : 'start',
                     panel  : panelPosition,
@@ -528,7 +532,7 @@ function PanelCtrl($scope, $document, $swipe, $timeout){
         });
     }
 
-    $timeout(swipeOnLoad);
+    $timeout(swipeOnLoad, 400);
 }
 
 function CollapsibleCtrl($scope, $timeout){
@@ -576,22 +580,22 @@ function CarouselCtrl($scope, $timeout){
     var swipeCarousel;
 
     $scope.images = [{
-        url: 'http://localhost/jquery-mobile/jquery.mobile-1.3.2/demos/_assets/img/paris.jpg',
+        url: 'assets/img/paris.jpg',
         selected: true,
     },{
-        url: 'http://localhost/jquery-mobile/jquery.mobile-1.3.2/demos/_assets/img/sydney.jpg',
+        url: 'assets/img/sydney.jpg',
         selected: false
     },{
-        url: 'http://localhost/jquery-mobile/jquery.mobile-1.3.2/demos/_assets/img/newyork.jpg',
+        url: 'assets/img/newyork.jpg',
         selected: false
     },{
-        url: 'http://localhost/jquery-mobile/jquery.mobile-1.3.2/demos/_assets/img/paris.jpg',
+        url: 'assets/img/galaxy_express.png',
         selected: true,
     },{
-        url: 'http://localhost/jquery-mobile/jquery.mobile-1.3.2/demos/_assets/img/sydney.jpg',
+        url: 'assets/img/phone_lumia920.png',
         selected: false
     },{
-        url: 'http://localhost/jquery-mobile/jquery.mobile-1.3.2/demos/_assets/img/newyork.jpg',
+        url: 'assets/img/phone_iphone5.png',
         selected: false
     }];
 

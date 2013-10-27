@@ -1,11 +1,17 @@
+<style>
+	.ui-content { height:100%;}
+    .ui-scroller-content{ padding: 15px; }
+</style>
 <div id="list-page" jqm-page>
     <div jqm-header>
         <a jqm-button jqm-theme="a" href="#/" icon="ui-icon-home" buttonpos="left" shadow="true">Home</a>
         <h1>Autocomplete</h1>
     </div>
-
-    <div jqm-textinput ng-model="search" type="search"></div>
-    <ul jqm-listview>
-    	<li ng-repeat="car in cars | filter:search" jqm-li-link="#/{{car}}">{{car}}</li>
-    </ul>
+    <div iscroll="wrapper1" transition="true">
+	    <div jqm-textinput ng-model="search" type="search"></div>
+	    <ul jqm-listview>
+	    	<li ng-repeat="car in cars | filter:search" jqm-li-link="#/{{car}}">{{car}}</li>
+	    </ul>
+        <div style="height:40px"></div>
+    </div>
 </div>
