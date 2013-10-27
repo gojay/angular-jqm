@@ -49,7 +49,7 @@
 	box-shadow: -5px 0 5px rgba(0,0,0,.10);
 }
 </style>
-<div id="panel-page" jqm-page>
+<div id="panel-page" ng-init="handle" jqm-page>
 	<div jqm-panel-container="state.openPanel">
 		<div class="ui-body-b">
 			<div jqm-header jqm-theme="b">
@@ -62,7 +62,7 @@
 		        	 ng-click="state.openPanel='right'"></div>
 			</div>
 			<div class="panel-content" style="height:100%; padding: 0 20px">
-				<p ng-repeat="(k,v) in handle">{{k}} : {{v}}</p>
+				<p ng-repeat="(kh,vh) in handle track by $index">{{kh}} : {{vh}}</p>
 			</div>
 		</div>
 		<div jqm-panel position="left" jqm-theme="e">

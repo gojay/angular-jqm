@@ -72,7 +72,7 @@ module
     $routeProvider.when("/panel", {
         templateUrl: 'partials/panel.html',
         animation: 'page-slide',
-        controller: ['$scope', '$document', '$swipe', '$timeout', PanelCtrl]
+        controller: ['$scope', '$compile', '$document', '$swipe', '$timeout', PanelCtrl]
     });
     $routeProvider.when("/collapsible", {
         templateUrl: 'partials/collapsible.html',
@@ -388,24 +388,36 @@ function listFilterCtrl($scope, $timeout){
 
 // angular ngTouch
 // $swipe demo http://plnkr.co/edit/cjvwaBFFbRFUVeuis7lP?p=preview
-function PanelCtrl($scope, $document, $swipe, $timeout){
+function PanelCtrl($scope, $compile, $document, $swipe, $timeout){
     var startCoords;
 
+    $scope.state  = {};
+    $scope.handle = {};
+
     function swipeOnLoad(){
-        var width = $document[0].width,
+        var width = $document[0].width || window.innerWidth,
             boundL = parseInt(15/100*width), // 15%
             boundR = parseInt(85/100*width), // 85%
             minBoundLeft = parseInt(30/100*width); // 30%
 
-        $scope.state = {};
-        $scope.handle = {
+        var handle = {
             width:width,
             boundL:boundL,
-            boundR:boundR,
+            boundR:boundR
         };
+
+        $scope.handle = handle;
+
+        var enableSwipe = true; 
+        var $panel = null;
 
         var $swiperContent = angular.element('.ui-panel-content-wrap');
         var $swiperHandler = angular.element('.ui-panel-content-wrap .panel-content');
+
+        $scope.$watch('state.openPanel', function(val){
+            $swiperContent.removeAttr('style');
+            if($panel) $panel.removeAttr('style');
+        });
         
         function cssPrefix(property, value){
             var vendors = ['', '-o-','-moz-','-ms-','-khtml-','-webkit-'];
@@ -445,12 +457,6 @@ function PanelCtrl($scope, $document, $swipe, $timeout){
             return coords.x - startCoords.x > $swiperContent.width()*(1/3) ? true : false;
         }
 
-        $scope.$watch('state.openPanel', function(val){
-            $swiperContent.removeAttr('style');
-            if($panel) $panel.removeAttr('style');
-        })
-
-        var enableSwipe = true; $panel = null;
         $swipe.bind($swiperHandler, {
             start: function(coords) {
                 startCoords = coords;
@@ -470,7 +476,7 @@ function PanelCtrl($scope, $document, $swipe, $timeout){
                 }
 
                 panelPosition = ( $panel ) ? $panel.get(0).className : 'null';
-                $scope.handle = {
+                var handle = {
                     width  : width,
                     boundL : boundL,
                     boundR : boundR,
@@ -480,6 +486,7 @@ function PanelCtrl($scope, $document, $swipe, $timeout){
                     panel  : panelPosition,
                     x : coords.x
                 };
+                $scope.handle = handle;
                 $scope.$apply();
             },
             move: function(coords) {
@@ -487,12 +494,13 @@ function PanelCtrl($scope, $document, $swipe, $timeout){
 
                 updateElementPosition(coords.x);
 
-                $scope.handle = {
+                var handle = {
                     event  : 'swipe',
                     action : 'move',
                     panel  : panelPosition,
                     x      : coords.x
                 };
+                $scope.handle = handle;
                 $scope.$apply();
             },
             end: function(endCoords) {
@@ -513,14 +521,14 @@ function PanelCtrl($scope, $document, $swipe, $timeout){
                 //     if(!panelClass.match('overlay')) $scope.state.openPanel = null;
                 //     updateElementPosition(0);
                 // }
-                $scope.handle = {
+                var handle = {
                     event  : 'swipe',
                     action : 'end',
                     panel  : $scope.state.openPanel,
                     x : endCoords.x,
                     fullSwipe: f
                 };
-
+                $scope.handle = handle;
                 $scope.$apply();
             }
         });
