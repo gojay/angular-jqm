@@ -391,12 +391,16 @@ function listFilterCtrl($scope, $timeout){
 function PanelCtrl($scope, $document, $swipe, $timeout){
     var startCoords;
     var width = $document[0].width,
-        boundL = parseInt(30/100*width), // 50%
-        boundR = parseInt(70/100*width), // 50%
+        boundL = parseInt(15/100*width), // 50%
+        boundR = parseInt(85/100*width), // 50%
         minBoundLeft = parseInt(30/100*width); // 3%
 
     $scope.state = {};
-    $scope.handle = {};
+    $scope.handle = {
+        width:width,
+        boundL:boundL,
+        boundR:boundR,
+    };
 
     function swipeOnLoad(){
 
@@ -404,13 +408,13 @@ function PanelCtrl($scope, $document, $swipe, $timeout){
         var $swiperHandler = angular.element('.ui-panel-content-wrap .panel-content');
         var $panel, panelPosition;
 
-        console.group();
-        console.info('start swipe');
-        console.log('document width', width);
-        console.log('minBoundLeft', minBoundLeft);
-        console.log('Swiper Content', $swiperContent[0])
-        console.log('Swiper Handler', $swiperHandler[0])
-        console.groupEnd();
+        // console.group();
+        // console.info('start swipe');
+        // console.log('document width', width);
+        // console.log('minBoundLeft', minBoundLeft);
+        // console.log('Swiper Content', $swiperContent[0])
+        // console.log('Swiper Handler', $swiperHandler[0])
+        // console.groupEnd();
 
         $scope.$watch('state.openPanel', function(val){
             console.log('openPanel', val)
@@ -530,9 +534,10 @@ function PanelCtrl($scope, $document, $swipe, $timeout){
                 $scope.$apply();
             }
         });
+        alert('onloaded');
     }
 
-    $timeout(swipeOnLoad, 400);
+    $timeout(swipeOnLoad, 1000);
 }
 
 function CollapsibleCtrl($scope, $timeout){
