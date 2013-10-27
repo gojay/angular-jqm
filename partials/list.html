@@ -57,10 +57,9 @@
         </div>
     </div>
 
-    <div iscroll="pageWrapper" scroller="pageScroller" snap="true" momentum="false" 
-        on-scroll-move="onScrollMove()" on-scroll-end="onScrollEnd()">
+    <div iscroll="pageWrapper" scroller="pageScroller" snap="true" momentum="false" on-scroll-move="onScrollMove()" on-scroll-end="onScrollEnd()">
         <div class="tab" ng-class="{'tabActive':tabs[0].selected}">
-            <div iscroll="wrapper1" transition="true" vertical="true"
+            <div iscroll="wrapper1" bounce="true" transition="true" vertical="true"
                      pull-refresh="true" 
                      pull-down="pullDownAction()" 
                      pull-up="pullUpAction()">
@@ -74,7 +73,7 @@
             </div>
         </div>
         <div class="tab" ng-class="{'tabActive':tabs[1].selected}">
-            <div iscroll="wrapper2" transition="true" vertical="true" 
+            <div iscroll="wrapper2" bounce="true" transition="true" vertical="true" 
                      pull-refresh="true" 
                      pull-down="pullDownAction()" 
                      pull-up="pullUpAction()">
@@ -89,7 +88,7 @@
             </div>
         </div>
         <div class="tab" ng-class="{'tabActive':tabs[2].selected}">
-            <div iscroll="wrapper3" transition="true" vertical="true" 
+            <div iscroll="wrapper3" bounce="true" transition="true" vertical="true" 
                      pull-refresh="true" 
                      pull-down="pullDownAction()" 
                      pull-up="pullUpAction()">

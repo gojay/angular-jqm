@@ -710,7 +710,7 @@
 		}
 	}]);
 
-	jqmModuleCustom.directive('iscroll', ['$parse', function ($parse) {
+	jqmModuleCustom.directive('iscroll', ['$parse', '$timeout',  function ($parse, $timeout) {
 	    var isDef = angular.isDefined;
 	    return {
 	        restrict: 'EA',
@@ -748,10 +748,11 @@
 	            scope.pullRefresh = isDef(attr.pullRefresh) ? attr.pullRefresh==="true" : false ;
 
 	            var options = {
+	                bounce        : isDef(attr.bounce) ? attr.bounce==='true' : false,
 	                useTransition : isDef(attr.transition) ? attr.transition==='true' : false,
 	                snap          : isDef(attr.snap)       ? attr.snap==='true' : false,
 	                momentum      : isDef(attr.momentum)   ? attr.momentum==='true' : true,
-	                vScrollbar    : isDef(attr.vertical)   ? attr.vertical==='true' : true,
+	                vScrollbar    : isDef(attr.vertical)   ? attr.vertical==='true' : false,
 	                hScrollbar    : isDef(attr.horizontal) ? attr.horizontal==='true' : false,
 	                lockDirection : isDef(attr.lock)       ? attr.lock==='true' : true,
 	                onBeforeScrollStart : function(e) {
@@ -840,7 +841,7 @@
 	                iscroll.refresh();
 	            };
 
-	            setTimeout(iscrollOnLoad);
+	            $timeout(iscrollOnLoad, 400);
 	        }
 	    }
 	}]);

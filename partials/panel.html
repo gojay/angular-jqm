@@ -61,7 +61,9 @@
 		        	 icon="ui-icon-bars" iconpos="notext" buttonpos="right" shadow="false"
 		        	 ng-click="state.openPanel='right'"></div>
 			</div>
-			<div class="panel-content" style="height:100%"></div>
+			<div class="panel-content" style="height:100%; padding: 0 20px">
+				<p ng-repeat="(k,v) in handle">{{k}} : {{v}}</p>
+			</div>
 		</div>
 		<div jqm-panel position="left" jqm-theme="e">
 			<div jqm-theme="e">
