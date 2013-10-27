@@ -391,44 +391,6 @@ function listFilterCtrl($scope, $timeout){
 function PanelCtrl($scope, $document, $swipe, $timeout){
     var startCoords;
 
-    function cssPrefix(property, value){
-        var vendors = ['', '-o-','-moz-','-ms-','-khtml-','-webkit-'];
-        var styles = {};
-        for (var i = vendors.length - 1; i >= 0; i--) {
-            styles[vendors[i] + property] = value;
-        }
-        return styles;
-    }
-
-    function updateElementPosition(pos){
-        var panelClass = $panel.get(0).className;
-        if(panelClass.match(/right/)){ // overlay
-            // pos = Math.abs(pos);
-            // console.group();
-            // console.log('width', width)
-            // console.log('pos', pos)
-            // console.log('pos', startCoords.x - pos)
-            // console.log('right', $panel.css('right'))
-            // console.groupEnd();
-
-            // if(pos >= 270) pos = 270;
-            // $panel.css(panelPosition, pos + 'px');
-            var p = (width-pos)/width * 100;
-            p = p > 50 ? 50 : p ;
-            $panel.css('width', p + '%');
-        } else {
-            pos -= startCoords.x;
-            var percent = parseInt(pos/width * 100);
-            if(percent >= 90) percent = 90;
-            $swiperContent.css(cssPrefix('transform', 'translate3d(' + percent + '%,0,0)'));
-            $panel.css('width', Math.abs(percent) + '%');
-        }
-    }
-
-    function fullSwipe(coords){
-        return coords.x - startCoords.x > $swiperContent.width()*(1/3) ? true : false;
-    }
-
     function swipeOnLoad(){
         var width = $document[0].width,
             boundL = parseInt(15/100*width), // 15%
@@ -444,7 +406,44 @@ function PanelCtrl($scope, $document, $swipe, $timeout){
 
         var $swiperContent = angular.element('.ui-panel-content-wrap');
         var $swiperHandler = angular.element('.ui-panel-content-wrap .panel-content');
-        var $panel, panelPosition;
+        
+        function cssPrefix(property, value){
+            var vendors = ['', '-o-','-moz-','-ms-','-khtml-','-webkit-'];
+            var styles = {};
+            for (var i = vendors.length - 1; i >= 0; i--) {
+                styles[vendors[i] + property] = value;
+            }
+            return styles;
+        }
+
+        function updateElementPosition(pos){
+            var panelClass = $panel.get(0).className;
+            if(panelClass.match(/right/)){ // overlay
+                // pos = Math.abs(pos);
+                // console.group();
+                // console.log('width', width)
+                // console.log('pos', pos)
+                // console.log('pos', startCoords.x - pos)
+                // console.log('right', $panel.css('right'))
+                // console.groupEnd();
+
+                // if(pos >= 270) pos = 270;
+                // $panel.css(panelPosition, pos + 'px');
+                var p = (width-pos)/width * 100;
+                p = p > 50 ? 50 : p ;
+                $panel.css('width', p + '%');
+            } else {
+                pos -= startCoords.x;
+                var percent = parseInt(pos/width * 100);
+                if(percent >= 90) percent = 90;
+                $swiperContent.css(cssPrefix('transform', 'translate3d(' + percent + '%,0,0)'));
+                $panel.css('width', Math.abs(percent) + '%');
+            }
+        }
+
+        function fullSwipe(coords){
+            return coords.x - startCoords.x > $swiperContent.width()*(1/3) ? true : false;
+        }
 
         $scope.$watch('state.openPanel', function(val){
             $swiperContent.removeAttr('style');
