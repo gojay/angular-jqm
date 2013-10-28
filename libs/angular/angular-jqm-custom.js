@@ -641,7 +641,7 @@
 	    };
 	}]);
 
-	jqmModuleCustom.directive('jqmTable', ['$compile', function(compile){
+	jqmModuleCustom.directive('jqmTable', ['$compile', '$timeout', function($compile, $timeout){
 		var isDef = angular.isDefined;
 		return {
 			scope: {},
@@ -652,35 +652,56 @@
 			controller: ['$scope', jqmTableCtrl],
 			compile: function(elm, attr, transclude){
 				return function(scope, element, attrs){
-					scope.columns = [];
+					scope.columns  = [];
+					scope.isReflow = isReflow();
+					// filter columns by priority
+					scope.filterColumns = function(column){
+					    if(angular.isDefined(column.priority) || column.priority == 'persist'){
+					        return true; 
+					    }
+					    return false;
+					};
 
-					var  tblClass = isDef(attr.bodyTheme) ? 'ui-body-' + attr.bodyTheme : 'ui-body-c' ;
-					if(isDef(attr.shadow)){
-						tblClass += 'ui-shadow';
+					var tblClass = ['ui-responsive', 'ui-table'];
+					tblClass.push(getBodyTheme());
+					if( isReflow() ){
+						tblClass.push('table-stroke');
+						tblClass.push('ui-table-reflow');
 					}
-					if(isDef(attr.type)){
-						tblClass += ' table-' + attr.type;
+					if( isShadow() ){
+						tblClass.push('table-shadow');
+					}
+					if( isDef(attr.type) && !isReflow() ){
+						tblClass.push('table-' + attr.type);
+					}
+
+					function getBodyTheme(){
+						return isDef(attr.bodyTheme) ? 'ui-body-' + attr.bodyTheme : 'ui-body-c' ;
+					}
+					function isShadow(){
+						return isDef(attr.shadow) && attr.shadow==='true';
+					}
+					function isReflow(){
+						return isDef(attr.reflow) && attr.reflow==='true';
 					}
 
 					var headClass = isDef(attr.headTheme) ? 'ui-bar-' + attr.headTheme : 'ui-bar-c' ;
 
 				    var tableEl = angular.element(element).find('table');
-				    tableEl.addClass("ui-responsive ui-table ui-table-columntoggle " + tblClass);
+				    tableEl.addClass(tblClass.join(' '));
 
 				    var indexes = [];
 				    angular.element(element).find('thead > tr > th').each(function(i,e){
 				    	var th = angular.element(e);
-			    		if( th.data('priority') ){
-			    			scope.columns.push({
-			    				show    : true,
-			    				priority: th.data('priority'),
-			    				column  : th.text()
-			    			});
-			    			indexes.push(i);
-			    		}
+		    			scope.columns.push({
+		    				index   : i,
+		    				show    : true,
+		    				priority: th.data('priority'),
+		    				text    : th.text()
+		    			});
 				    });
 
-				    setTimeout(function() {
+				    $timeout(function() {
 				    	angular.element(element).find('thead > tr').each(function(i,e){
 				    		nestedNgShow(angular.element(e));
 					    });
@@ -690,15 +711,20 @@
 				    }, 200);
 
 					function nestedNgShow(el){
-						el.children().each(function(_i,_e){	
-			    			var _e = angular.element(_e);
-			    			var index = indexes.indexOf(_i);
-			    			if(index !== -1) compileEl(_e, 'columns['+index+'].show');
+						el.children().each(function(i, e){	
+			    			var e    = angular.element(e);
+			    			var column = scope.columns[i];
+			    			if( scope.isReflow ){
+			    				e.prepend('<b class="ui-table-cell-label">'+ column.text +'</b>');
+			    			}
+			    			if(angular.isDefined(column.priority)) {
+			    				compileEl(e, 'columns['+column.index+'].show');
+			    			}
 			    		});
 					}
 				    function compileEl(_e, binding){
 				    	var e_ = _e.attr('ng-show', binding);
-		    			compile(e_.parent().contents())(scope);
+		    			$compile(e_.parent().contents())(scope);
 		    			_e.replaceWith(e_);
 				    }
 				};

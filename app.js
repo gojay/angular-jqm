@@ -389,16 +389,16 @@ function listFilterCtrl($scope, $timeout){
 // angular ngTouch
 // $swipe demo http://plnkr.co/edit/cjvwaBFFbRFUVeuis7lP?p=preview
 function PanelCtrl($scope, $compile, $document, $swipe, $timeout){
-    var startCoords;
+    var startCoords = {};
 
     $scope.state  = {};
     $scope.handle = {};
 
     function swipeOnLoad(){
         var width = $document[0].width || window.innerWidth,
-            boundL = parseInt(15/100*width), // 15%
-            boundR = parseInt(85/100*width), // 85%
-            minBoundLeft = parseInt(30/100*width); // 30%
+            boundL = parseInt(15/100*width),        // 15%
+            boundR = parseInt(85/100*width),        // 85%
+            minBoundLeft = parseInt(30/100*width);  // 30%
 
         var handle = {
             width:width,
@@ -445,46 +445,49 @@ function PanelCtrl($scope, $compile, $document, $swipe, $timeout){
                 p = p > 50 ? 50 : p ;
                 $panel.css('width', p + '%');
             } else {
-                pos -= startCoords.x;
+                pos = Math.abs(pos - startCoords.x);
                 var percent = parseInt(pos/width * 100);
                 if(percent >= 90) percent = 90;
+                
                 $swiperContent.css(cssPrefix('transform', 'translate3d(' + percent + '%,0,0)'));
-                $panel.css('width', Math.abs(percent) + '%');
+                // $panel.css('width', Math.abs(percent) + '%');
             }
         }
 
         function fullSwipe(coords){
             return coords.x - startCoords.x > $swiperContent.width()*(1/3) ? true : false;
         }
-
         $swipe.bind($swiperHandler, {
             start: function(coords) {
                 startCoords = coords;
                 
-                if(coords.x >= boundR){
-                    $panel = angular.element('.ui-panel-position-right')
-                                    .removeClass('ui-panel-closed')
-                                    .addClass('ui-panel-opened ui-panel-open');
-                   updateElementPosition(boundR);
-                } else if(coords.x <= boundL) {
-                    $panel = angular.element('.ui-panel-position-left')
-                                    .removeClass('ui-panel-closed');
-                   updateElementPosition(boundL);
+                if($scope.state.openPanel == null){
+                    if(coords.x >= boundR){
+                        $panel = angular.element('.ui-panel-position-right')
+                                        .removeClass('ui-panel-closed')
+                                        .addClass('ui-panel-opened ui-panel-open');
+                       updateElementPosition(boundR);
+                    } else if(coords.x <= boundL) {
+                        $swiperContent.addClass('ui-panel-content-wrap-open ui-panel-content-wrap-position-left ui-panel-content-wrap-display-reveal');
+                        $panel = angular.element('.ui-panel-position-left')
+                                        .removeClass('ui-panel-closed')
+                                        .addClass('ui-panel-opened ui-panel-open');
+                       updateElementPosition(boundL);
+                    }
                 } else {
                     $panel = null;
                     $scope.state.openPanel = null;
                 }
 
-                panelPosition = ( $panel ) ? $panel.get(0).className : 'null';
+                panelClass = ( $panel ) ? $panel.get(0).className : 'null';
                 var handle = {
                     width  : width,
                     boundL : boundL,
                     boundR : boundR,
-                    enableSwipe: enableSwipe,
                     event  : 'swipe',
                     action : 'start',
-                    panel  : panelPosition,
-                    x : coords.x
+                    panel  : panelClass,
+                    x      : coords.x
                 };
                 $scope.handle = handle;
                 $scope.$apply();
@@ -497,7 +500,7 @@ function PanelCtrl($scope, $compile, $document, $swipe, $timeout){
                 var handle = {
                     event  : 'swipe',
                     action : 'move',
-                    panel  : panelPosition,
+                    panel  : panelClass,
                     x      : coords.x
                 };
                 $scope.handle = handle;
@@ -508,11 +511,10 @@ function PanelCtrl($scope, $compile, $document, $swipe, $timeout){
 
                 var r = startCoords.x - endCoords.x;
                 var f = fullSwipe(endCoords);
-                if(r == 0){
+                if(r == 0 && !f){
                     updateElementPosition(0);
                     $scope.state.openPanel = null;
                 } else {
-                    var panelClass = $panel.get(0).className;
                     $scope.state.openPanel = (panelClass.match(/left/)) ? 'left' : 'right';
                 }
 
@@ -525,15 +527,13 @@ function PanelCtrl($scope, $compile, $document, $swipe, $timeout){
                     event  : 'swipe',
                     action : 'end',
                     panel  : $scope.state.openPanel,
-                    x : endCoords.x,
-                    fullSwipe: f
+                    x      : endCoords.x,
+                    fullSwipe: f,
                 };
                 $scope.handle = handle;
                 $scope.$apply();
             }
         });
-
-        alert('onloaded');
     }
 
     $timeout(swipeOnLoad, 1000);

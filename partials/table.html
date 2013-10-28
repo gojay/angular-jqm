@@ -8,7 +8,7 @@
         <h1>Table</h1>
     </div>
     <div iscroll="wrapper1" class="ui-body-c" transition="true" vertical="true">
-    	<div jqm-popup="columnPopup" jqm-theme="none" ng-animate="'pop'">
+    	<!-- <div jqm-popup="columnPopup" jqm-theme="none" ng-animate="'pop'">
 	        <div jqm-controlgroup type="vertical">
                 <div jqm-checkbox ng-model="c.show" ng-repeat="c in columns">{{c.column}}</div>
             </div>
@@ -126,10 +126,34 @@
 		         <td ng-show="columns[3].show">87</td>
 		       </tr>
 		    </tbody>
-		</table>
+		</table> -->
 
 		<h4>JQM Table</h4>
 		<div jqm-table head-theme="a" body-theme="b" type="stripe" shadow="true">
+			<table>
+				<thead>
+			       <tr class="ui-bar-d">
+			         	<th data-priority="2">Rank</th>
+			         	<th>Movie Title</th>
+			         	<th data-priority="3">Year</th>
+			         	<th data-priority="1"><abbr title="Rotten Tomato Rating">Rating</abbr></th>
+			         	<th data-priority="4">Reviews</th>
+			       </tr>
+			     </thead>
+			    <tbody>
+					<tr ng-repeat="movie in data">
+						<th>{{movie.no}}</th>
+						<td><a ng-href="movie.link" class="ui-link">{{movie.name}}</a></td>
+						<td>{{movie.year}}</td>
+						<td>{{movie.rating}}</td>
+						<td>{{movie.reviews}}</td>
+					</tr>
+			    </tbody>
+			</table>
+		</div>
+
+		<h4>JQM Table Reflow Toggle</h4>
+		<div jqm-table reflow="true" type="stroke">
 			<table>
 				<thead>
 			       <tr class="ui-bar-d">
