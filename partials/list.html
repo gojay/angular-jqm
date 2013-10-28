@@ -30,7 +30,7 @@
         transition: 200ms cubic-bezier(0.1, 0.57, 0.1, 1);
     }
 </style>
-<div id="list-page" jqm-page>
+<div jqm-page>
     <div jqm-footer jqm-theme="a">
         <div class="tabbar ui-navbar">
             <div class="nav" ng-style="barTranslate"></div>
@@ -57,7 +57,10 @@
         </div>
     </div>
 
-    <div iscroll="pageWrapper" scroller="pageScroller" snap="true" momentum="false" on-scroll-move="onScrollMove()" on-scroll-end="onScrollEnd()">
+    <div iscroll="pageWrapper" 
+         scroller-class="pageScroller" scroller-content-class="ui-scroller-content-tab"
+         snap="true" momentum="false" 
+         on-scroll-move="onScrollMove()" on-scroll-end="onScrollEnd()">
         <div class="tab" ng-class="{'tabActive':tabs[0].selected}">
             <div iscroll="wrapper1" bounce="true" transition="true" vertical="true"
                      pull-refresh="true" 

@@ -5,10 +5,10 @@
 
 	jqmModuleCustom.directive('jqmCollapsible', function() {
 	    return {
-	        restrict: 'A',
-	        require: '^jqmCollapsibleSet',
-	        templateUrl: 'templates/jqmCollapsible.html',
 	        scope: 'isolate',
+	        restrict: 'A',
+	        require: ['^jqmCollapsibleSet', '^?iscroll'],
+	        templateUrl: 'templates/jqmCollapsible.html',
 	        transclude: true,
 	        replace: true,
 	        compile: function(celement, cattr, transclude){
@@ -21,9 +21,17 @@
 	            var header = angular.element(celement).find('a');
 	            header.attr('jqm-theme', theme.header);
 
-	            return function(scope, element, attr, jqmCollapsibleSetCtrl){
+	            return function(scope, element, attr, ctrls){
 
-	                jqmCollapsibleSetCtrl.addContent(scope)
+	            	var jqmCollapsibleSetCtrl = ctrls[0];
+	            	var iscrollCtrl = ctrls[1];
+
+	            	console.group('jqmCollapsible');
+	            	console.log('jqmCollapsibleSetCtrl', jqmCollapsibleSetCtrl);
+	            	console.log('iscrollCtrl', iscrollCtrl);
+	            	console.groupEnd();
+
+	                jqmCollapsibleSetCtrl.addContent(scope);
 
 	                if(jqmCollapsibleSetCtrl.isInset){
 	                    angular.element(element).addClass('ui-corner-all');
@@ -36,12 +44,12 @@
 
 	                scope.collapse = function(){
 	                    jqmCollapsibleSetCtrl.filterContent(scope);
+	                    iscrollCtrl.scope.iscroll.refresh();
 	                };
 	            } 
 	        }
 	    };
 	});
-
 	jqmModuleCustom.directive('jqmCollapsibleSet', function () {
 	    var isDef = angular.isDefined;
 	    var scopeSet = [];
@@ -88,7 +96,6 @@
 	    var isdef = angular.isDefined;
 	    return {
 	        restrict: 'A',
-	        // replace: true,
 	        transclude: true,
 	        template: "<div class=\"ui-dialog-contain\" jqm-class=\"{'ui-overlay-shadow': shadow!='false', 'ui-corner-all': corners!='false'}\" ng-transclude></div>",
 	        scope: {
@@ -104,82 +111,6 @@
 	    };
 	});
 
-/*
-	jqmModuleCustom.directive('jqmSlider', function(){
-		var isDef = angular.isDefined;
-		return {
-			require: 'ngModel',
-			scope: {
-				value: '=ngModel'
-			},
-			restrict: 'A',
-			replace: true,
-			templateUrl: 'templates/jqmSlider.html',
-			controller: ['$scope', '$element', '$attrs', '$timeout', '$document', '$swipe', jqmSliderCtrl],
-			compile: function(celement, cattr, transclude){
-				var theme = isDef(cattr.theme) ? cattr.theme : 'c' ;
-				var handler = angular.element(celement).find('.ui-slider-handle');
-				handler.attr('jqm-theme',theme);
-				return function(scope, element, attr, jqmCollapsibleSetCtrl){}
-			}
-		};
-
-		function jqmSliderCtrl($scope, $element, $attrs, $timeout, $document, $swipe){
-			var docWidth = $document.width();
-
-			var el = angular.element($element);
-
-	        // var min  = $scope.min = isDef($attrs.min) ? $attrs.min : 0 ;
-	        var min  = 0;
-	        var max  = $scope.max = isDef($attrs.max) ? $attrs.max : 100 ;
-	        var step = isDef($attrs.step) ? 1 / parseFloat($attrs.step) : 1 ; 
-
-			$scope.mini = isDef($attrs.mini) ? $attrs.mini==="true" : false ;
-	    	$scope.styles = {handler:{}, highlight:{}};
-	    	$scope.highlight = isDef($attrs.highlight) ? $attrs.highlight==="true" : false ;
-
-	        $scope.$watch('value', function(val){
-	            if(val > max) $scope.value = max;
-
-	            var calc = val * 100 / max + '%';
-	            $scope.styles.handler.left = calc;
-	            $scope.styles.highlight.width = calc;
-	        });
-
-		    function onLoad(){
-		        var $slider = el.find('.ui-slider-track');
-		        var $sliderHandler = el.find('.ui-slider-track > .ui-slider-handle');
-
-		        var width = $slider[0].offsetWidth;
-		        var left  = $slider[0].offsetLeft;
-
-		        $swipe.bind($sliderHandler, {
-		            start: function(coordscoords){
-		                $sliderHandler.addClass('ui-focus');
-		            },
-		            move: function(coords){
-		                var move = coords.x - left;
-		                if(move <= 0) 
-		                    move = 0;
-		                else if(move >= width) 
-		                    move = width;
-
-		                var percent = move/width * 100;
-		                var calc  = percent * max/100;
-		                var value = Math.round( calc * step ) / step; 
-		                $scope.value = value
-		                $scope.$apply();
-		            },
-		            end: function(coords){
-		                $sliderHandler.removeClass('ui-focus');
-		            }
-		        });
-		    }
-
-		    $timeout(onLoad);
-		};
-	});
-*/
 	jqmModuleCustom.directive('jqmSlider', function(){
 		var isDef = angular.isDefined;
 		return {
@@ -346,7 +277,6 @@
 		    $timeout(onLoad);
 		};
 	});
-
 	jqmModuleCustom.directive('jqmRangeslider', ['$compile', function($compile){
 		var isDef = angular.isDefined;
 		return {
@@ -376,65 +306,11 @@
 		var isDef = angular.isDefined;
 		var state = false;
 		return {
-			scope: {
-				items:'=ngModel'
-			},
-			require: 'ngModel',
-			restrict: 'A',
-			templateUrl: 'templates/jqmSelect.html',
-			replace: true,
-			compile: function(celement, cattr, transclude){
-				var isNative    = isDef(cattr.native) ? cattr.native==="true" : true ;
-				var animation   = isDef(cattr.animation) ? cattr.animation : 'fade';
-				var theme       = isDef(cattr.theme) ? cattr.theme : 'c';
-				var buttonEl    = angular.element(celement).children().eq(0);
-
-				var attributes = {'jqm-theme' : theme};
-				if( !isNative ){
-					angular.extend(attributes, {
-						'jqm-popup-target':'PopupSelectMenu',
-						'jqm-popup-model':'selectMenuPopup',
-						'ng-click':'selectMenuPopup = true'
-					});
-				}
-				buttonEl.attr(attributes);
-
-				return function($scope, iElm, iAttrs, controller) {
-					$scope.isNative = isNative ;
-					$scope.title    = isDef(iAttrs.title) ? iAttrs.title : 'Choose one';
-					$scope.selected = isDef(iAttrs.selected) ? iAttrs.selected : $scope.title;
-
-					$scope.selectPopup = function(index){
-				        $scope.selected = $scope.items[index];
-				        $scope.selectMenuPopup = false;
-				    };
-
-					if( !isNative ){
-						// create popup
-						var popup = '<div jqm-popup="PopupSelectMenu" jqm-theme="a" animation="'+animation+'" style="min-width:250px;">'+
-								       '<ul jqm-listview style="margin:0">'+
-								            '<li jqm-li-entry jqm-theme="'+theme+'" style="text-align:center;">'+ $scope.title +'</li>'+
-								            '<li ng-repeat="item in items" jqm-theme="'+theme+'" jqm-li-link icon="false"'+
-								                'ng-class="{\'ui-btn-active\':item == selected}"'+
-								                'ng-click="selectPopup($index)">{{item}}</li>'+
-								        '</ul>'+
-								    '</div>';
-						// append compiled popup element
-						angular.element(iElm).append($compile(popup)($scope));
-					}
-				}
-			}
-		};
-	}]);
-
-	jqmModuleCustom.directive('jqmSelectTransclude', ['$compile', function($compile){
-		var isDef = angular.isDefined;
-		var state = false;
-		return {
 			restrict: 'A',
 			scope: {
 				selected:'=ngModel'
 			},
+			require: '^?iscroll',
 			template: '<div ng-class="{\'ui-select\':isNative}"><div jqm-button icon="ui-icon-arrow-d" iconpos="right" ng-class="{\'ui-first-child\':firstBtn, \'ui-last-child\':lastBtn}">{{selectedText}}</div><select ng-show="isNative" ng-model="selected" ng-transclude></select></div>',
 			replace: true,
 			transclude: true,
@@ -446,14 +322,15 @@
 				var attributes = {'jqm-theme' : theme};
 				if( !isNative ){
 					angular.extend(attributes, {
-						'jqm-popup-target':'PopupSelectMenu',
-						'jqm-popup-model':'selectMenuPopup',
+						'jqm-popup-target'   :'PopupSelectMenu',
+						'jqm-popup-model'    :'selectMenuPopup',
+						'jqm-popup-placement':'center',
 						'ng-click':'selectMenuPopup = true'
 					});
 				}
 				buttonEl.attr(attributes);
 
-				return function($scope, iElm, iAttrs, ctrl) {
+				return function($scope, iElm, iAttrs, iscrollCtrl) {
 
 					var title;
 
@@ -644,7 +521,7 @@
 	jqmModuleCustom.directive('jqmTable', ['$compile', '$timeout', function($compile, $timeout){
 		var isDef = angular.isDefined;
 		return {
-			scope: {},
+			scope: 'isolate',
 			restrict: 'A',
 			templateUrl: 'templates/jqmTable.html',
 			replace: true,
@@ -739,10 +616,6 @@
 	jqmModuleCustom.directive('iscroll', ['$parse', '$timeout',  function ($parse, $timeout) {
 	    var isDef = angular.isDefined;
 	    return {
-	        restrict: 'EA',
-	        transclude: true,
-	        replace: true,
-	        templateUrl: 'templates/iscroll.html',
 	        scope: {
 	            pullUp: '&',
 	            pullDown: '&',
@@ -759,6 +632,11 @@
 	            onZoom: '&',
 	            onZoomEnd: '&'
 	        },
+	        restrict: 'EA',
+	        transclude: true,
+	        replace: true,
+	        templateUrl: 'templates/iscroll.html',
+	        controller: ['$scope', iscrollCtrl],
 	        link: function(scope, element, attr, iscrollableCtrl){
 	            
 	            var iscrollModel = $parse(attr.iscroll);
@@ -770,8 +648,9 @@
 
 	            attr.$set('id', attr.iscroll);
 
-	            scope.scroller    = isDef(attr.scroller) ? attr.scroller : 'scroller' ;
-	            scope.pullRefresh = isDef(attr.pullRefresh) ? attr.pullRefresh==="true" : false ;
+	            scope.scrollerClass  	   = isDef(attr.scrollerClass) ? attr.scrollerClass : 'scroller' ;
+	            scope.scrollerContentClass = isDef(attr.scrollerContentClass) ? attr.scrollerContentClass : 'ui-scroller-content' ;
+	            scope.pullRefresh 		   = isDef(attr.pullRefresh) ? attr.pullRefresh==="true" : false ;
 
 	            var options = {
 	                bounce        : isDef(attr.bounce) ? attr.bounce==='true' : false,
@@ -869,6 +748,10 @@
 
 	            $timeout(iscrollOnLoad, 400);
 	        }
+	    }
+
+	    function iscrollCtrl(scope){
+	    	this.scope = scope;
 	    }
 	}]);
 

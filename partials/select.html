@@ -1,7 +1,3 @@
-<style>
-	.ui-content { height:100%;}
-    .ui-scroller-content{ padding: 15px; }
-</style>
 <div jqm-page>
     <div jqm-header>
         <a jqm-button jqm-theme="a" href="#/" icon="ui-icon-home" buttonpos="left" shadow="true">Home</a>
@@ -9,35 +5,31 @@
     </div>
 
     <div iscroll="wrapper1" transition="true" vertical="true">
-<!-- 
-		<div jqm-select ng-model="items"></div>
-		<div jqm-select ng-model="items" native="false" title="Choose an item"></div>
-		<div jqm-select ng-model="movies" animation="pop" theme="a" native="false"></div>
- -->
+
 		<h4>JQM select transclude</h4>
 
-		<div jqm-select-transclude ng-model="selectedItem1" animation="pop">
+		<div jqm-select ng-model="selectedItem1" animation="pop">
 			<option value="">Choose an item (Native)</option>
 			<option value="{{item}}" ng-repeat="item in items">{{item}}</option>
 		</div>
 
 		<p>item : {{selectedItem1}}</p>
 
-		<div jqm-select-transclude ng-model="selectedItem2" native="false" animation="pop">
+		<div jqm-select ng-model="selectedItem2" native="false" animation="pop">
 			<option value="">Choose an item</option>
 			<option value="{{item}}" ng-repeat="item in items">{{item}}</option>
 		</div>
 
 		<p>item : {{selectedItem2}}</p>
 
-		<div jqm-select-transclude ng-model="selectedMovie" animation="pop" theme="a" native="false">
+		<div jqm-select ng-model="selectedMovie" animation="pop" theme="a" native="false">
 			<option value="">Choose movie</option>
 			<option value="{{movie}}" ng-repeat="movie in movies">{{movie}}</option>
 		</div>
 
 		<p>movie : {{selectedMovie}}</p>
 
-		<div jqm-select-transclude ng-model="selectedCountry" native="false" theme="b">
+		<div jqm-select ng-model="selectedCountry" native="false" theme="b">
 			<option value="">Choose your country</option>
 			<optgroup ng-repeat="(k,group) in groups" label="{{k}}">
 				<option value="{{country}}" ng-repeat="country in group">{{country}}</option>

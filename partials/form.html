@@ -79,7 +79,7 @@
     	<div jqm-fieldcontain>
 		    <div jqm-controlgroup type="horizontal" legend="Combobox">
 				<div jqm-controlgroup type="horizontal">
-					<div jqm-select-transclude ng-model="values.item" animation="pop">
+					<div jqm-select ng-model="values.item" animation="pop">
 						<option value="">Item</option>
 						<option value="{{item}}" ng-repeat="item in data.items">{{item}}</option>
 					</div>
@@ -103,15 +103,15 @@
 		<div style="height:100px"></div>
 
 		<!-- <div jqm-controlgroup type="vertical">
-			<div jqm-select-transclude ng-model="selectedItem2" animation="pop">
+			<div jqm-select ng-model="selectedItem2" animation="pop">
 				<option value="">Choose an item</option>
 				<option value="{{item}}" ng-repeat="item in data.items">{{item}}</option>
 			</div>
-			<div jqm-select-transclude ng-model="selectedMovie" animation="pop">
+			<div jqm-select ng-model="selectedMovie" animation="pop">
 				<option value="">Choose movie</option>
 				<option value="{{movie}}" ng-repeat="movie in data.movies">{{movie}}</option>
 			</div>
-			<div jqm-select-transclude ng-model="selectedCountry">
+			<div jqm-select ng-model="selectedCountry">
 				<option value="">Choose your country</option>
 				<optgroup ng-repeat="(k,group) in data.groups" label="{{k}}">
 					<option value="{{country}}" ng-repeat="country in group">{{country}}</option>

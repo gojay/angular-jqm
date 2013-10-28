@@ -125,6 +125,10 @@ function NoopCtrl() {}
 function MainCtrl($scope){
 }
 
+// coba tambah fitur baru : infinite scroll
+// module : ngInfiniteScroll
+// source :  https://github.com/BinaryMuse/ngInfiniteScroll 
+// demo & documentation : http://binarymuse.github.io/ngInfiniteScroll
 function ListCtrl($scope, $timeout, $compile){
     var x = 0;
 
@@ -405,7 +409,6 @@ function PanelCtrl($scope, $compile, $document, $swipe, $timeout){
             boundL:boundL,
             boundR:boundR
         };
-
         $scope.handle = handle;
 
         var enableSwipe = true; 

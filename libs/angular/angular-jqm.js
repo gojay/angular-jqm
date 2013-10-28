@@ -1948,7 +1948,7 @@ function($position, animationComplete, $parse, $rootElement, $timeout, $compile,
         }
         popupModel.assign(scope.$parent, scope);
         
-        console.group();
+        console.group('jqmPopup');
         console.log('scope', scope);
         console.groupEnd();
 

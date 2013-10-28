@@ -1,10 +1,10 @@
 <div>
-	<div jqm-popup="columnPopup" jqm-theme="none" ng-animate="'pop'">
+	<div ng-if="!isReflow" jqm-popup="columnPopup" jqm-theme="none" ng-animate="'pop'">
         <div jqm-controlgroup type="vertical">
             <div jqm-checkbox ng-model="c.show" ng-repeat="c in columns | orderBy:'priority' | filter:filterColumns">{{c.text}}</div>
         </div>
     </div>
-    <div jqm-button mini="true" class="ui-table-columntoggle-btn"
+    <div ng-if="!isReflow" jqm-button mini="true" class="ui-table-columntoggle-btn"
 	    jqm-popup-target="columnPopup" 
 	    jqm-popup-model="buttonPopupList" 
 	    ng-click="buttonPopupList = true">
