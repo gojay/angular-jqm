@@ -1,6 +1,6 @@
 <style type="text/css">
 
-    #pageWrapper {
+    #tabWrapper {
         position:absolute;
         z-index:1;
         overflow:hidden;
@@ -10,9 +10,11 @@
         left:0;
     }
 
-    #pageScroller,
-    .pageScroller {
+    .tabScroller {
         height: 100%;
+    }
+    .ui-scroller-content-infinite { 
+        padding: 15px 15px 0; 
     }
     
     .tab {
@@ -57,15 +59,18 @@
         </div>
     </div>
 
-    <div iscroll="pageWrapper" 
-         scroller-class="pageScroller" scroller-content-class="ui-scroller-content-tab"
+    <div iscroll="tabWrapper" 
+         scroller-class="tabScroller" scroller-content-class="ui-scroller-content-tab"
          snap="true" momentum="false" 
-         on-scroll-move="onScrollMove()" on-scroll-end="onScrollEnd()">
+         on-scroll-move="tabIscroll.onScrollMove()" 
+         on-scroll-end="tabIscroll.onScrollEnd()">
         <div class="tab" ng-class="{'tabActive':tabs[0].selected}">
             <div iscroll="wrapper1" bounce="false" transition="true" vertical="true"
-                    on-scroll-end="infiniteScroll()"
-                    pull-down="pullDownAction()" 
-                    pull-up="pullUpAction()">
+                    scroller-content-class="ui-scroller-content-infinite"
+                    on-scroll-end="pageIscroll.infiniteScroll()"
+                    on-scroll-move="pageIscroll.onScrollMove()"
+                    pull-down="pageIscroll.pullDownAction()" 
+                    pull-up="pageIscroll.pullUpAction()">
                 <ul jqm-listview>
                     <li jqm-li-divider jqm-theme="a">Simple</li>
                     <li ng-repeat="i in data | fb:f"
@@ -81,9 +86,9 @@
         </div>
         <div class="tab" ng-class="{'tabActive':tabs[1].selected}">
             <div iscroll="wrapper2" bounce="true" transition="true" vertical="true" 
-                     pull-refresh="true" 
-                     pull-down="pullDownAction()" 
-                     pull-up="pullUpAction()">
+                    pull-refresh="true" 
+                    pull-down="pageIscroll.pullDownAction()" 
+                    pull-up="pageIscroll.pullUpAction()">
                 <ul jqm-listview>
                     <li jqm-li-divider jqm-theme="a">Description</li>
                     <li ng-repeat="i in [] | range:10 | fb:f"
@@ -96,9 +101,9 @@
         </div>
         <div class="tab" ng-class="{'tabActive':tabs[2].selected}">
             <div iscroll="wrapper3" bounce="true" transition="true" vertical="true" 
-                     pull-refresh="true" 
-                     pull-down="pullDownAction()" 
-                     pull-up="pullUpAction()">
+                    pull-refresh="true" 
+                    pull-down="pageIscroll.pullDownAction()" 
+                    pull-up="pageIscroll.pullUpAction()">
                 <ul jqm-listview>
                     <li jqm-li-divider jqm-theme="c">Custom</li>
                     <li ng-repeat="i in [] | range:10 | fb:f"

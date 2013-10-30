@@ -134,7 +134,7 @@ function MainCtrl($scope){
 // module : ngInfiniteScroll
 // source :  https://github.com/BinaryMuse/ngInfiniteScroll 
 // demo & documentation : http://binarymuse.github.io/ngInfiniteScroll
-function ListCtrl($scope, $timeout, $compile){
+function ListCtrl(scope, $timeout, $compile){
     var x = 0;
 
     var swipeTabs,
@@ -142,7 +142,140 @@ function ListCtrl($scope, $timeout, $compile){
         pullUpEl, pullUpOffset,
         generatedCount = 0;
 
-    $scope.tabs = [{
+    var ListiScroll = {
+        init: function(){
+            var wrapperWidth = 0;
+
+            // get object iscroll from directive
+            swipeTabs = angular.element('#tabWrapper').scope().iscroll;
+
+            updateLayout();
+
+            function updateLayout() {
+
+                var currentTab = 0;
+
+                if (wrapperWidth > 0) {
+                    currentTab = - Math.ceil( $('.tabScroller').position().left / wrapperWidth);
+                }
+
+                wrapperWidth = $('#tabWrapper').width();
+
+                $('.tabScroller').css('width', wrapperWidth * 3)
+                    .find('.tab').css('width', wrapperWidth);
+
+                swipeTabs.refresh();
+                swipeTabs.scrollToPage(currentTab, 0, 0);
+            }
+        },
+        get: function(){
+            var tabActive = angular.element('.tabActive');
+            // get wrapper id as iscroll id
+            var scrollId = tabActive.children().get(0).id;
+            // get object iscroll from directive by scroll id
+            return angular.element('#'+scrollId).scope().iscroll;
+        },
+        handle: {
+            tab: {
+                onScrollMove: function(){
+                    var calc = (swipeTabs.absDistX/docWidth*100/3);
+                    var left = (swipeTabs.dirX > 0) ? calc + x : x - calc ;
+                    scope.barTranslate = {
+                        '-webkit-transform': 'translate('+left+'%, 0px)',
+                        'transform': 'translate('+left+'%, 0px)'
+                    };
+                    scope.$apply();
+                },
+                onScrollEnd: function(){
+                    if(swipeTabs.absDistX) x = swipeTabs.currPageX * 100;
+
+                    angular.forEach(scope.tabs, function(tabs){
+                        tabs.selected = false;
+                    });
+                    scope.tabs[swipeTabs.currPageX].selected = true;
+                    scope.barTranslate = {
+                        '-webkit-transform': 'translate('+x+'%, 0px)',
+                        'transform': 'translate('+x+'%, 0px)'
+                    };
+                    scope.$apply();
+                }
+            },
+            page: {
+                onScrollMove: function(){
+                    var tabActive = $('.tabActive');
+                    // get wrapper id as iscroll id
+                    var scrollId = tabActive.children().get(0).id;
+                    // get object iscroll from directive by scroll id
+                    var iscroll  = angular.element('#'+scrollId).scope().iscroll;
+
+                    if( iscroll.x ) e.preventDefault();
+
+                    console.log('onBeforeScrollMove', iscroll.x);
+                },
+                pullDownAction: function(){
+                    var el = $('.tabActive'),
+                        index = el.index();
+
+                    // get wrapper id as iscroll id
+                    var scrollId = el.children().get(0).id;
+
+                    // get object iscroll from directive by scroll id
+                    var iscroll  = angular.element('#'+scrollId).scope().iscroll;
+
+                    $timeout(function(){ 
+
+                        var li, i;
+
+                        for (i=0; i<3; i++) {
+                            li = compileEl(index, ++generatedCount);
+                            $('li:first-child',el).after(li);
+                        }
+
+                        iscroll.refresh();
+
+                    }, 1000);
+                },
+                pullUpAction: function(){
+                    var el = $('.tabActive'),
+                        index = el.index();
+
+                    // get wrapper id as iscroll id
+                    var scrollId = el.children().get(0).id;
+
+                    // get object iscroll from directive by scroll id
+                    var iscroll  = angular.element('#'+scrollId).scope().iscroll;
+
+                    $timeout(function(){ 
+                        var li, i;
+
+                        for (i=0; i<3; i++) {
+                            li = compileEl(index, ++generatedCount);
+                            $('ul',el).append(li);
+                        }
+
+                        iscroll.refresh();
+                        
+                    }, 1000);
+                },
+                infiniteScroll: function(){
+                    var iscroll  = angular.element('#wrapper1').scope().iscroll;
+
+                    if( iscroll.y <= (iscroll.maxScrollY + 20) ){
+                        scope.loading = true;
+                        $timeout(function(){
+                            addData(10);
+                            $timeout(function(){ 
+                                iscroll.refresh();
+                                scope.loading = false; 
+                            });
+                        }, 3000);
+                    }
+                }
+            }
+        }
+    };
+
+    scope.tabs = [{
         title: 'Simple',
         selected: true,
     },{
@@ -153,125 +286,34 @@ function ListCtrl($scope, $timeout, $compile){
         selected: false
     }];
 
-    $scope.data = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20];
+    scope.data = [];
+    addData(20);
 
-    $scope.barTranslate = {};
+    scope.barTranslate = {};
 
-    $scope.f = 0;
-    $scope.setF = function(val){
-        $scope.f = val;
+    scope.f = 0;
+    scope.setF = function(val){
+        scope.f = val;
     };
-    $scope.setTab = function(index){
-        angular.forEach($scope.tabs, function(tabs){
+    scope.setTab = function(index){
+        angular.forEach(scope.tabs, function(tabs){
             tabs.selected = false;
         });
-        $scope.tabs[index].selected = true;
+        scope.tabs[index].selected = true;
         swipeTabs.scrollToPage(index, 0);
     };
 
-    $scope.onScrollMove = onScrollMove;
-    $scope.onScrollEnd  = onScrollEnd;
-    $scope.infiniteScroll = infiniteScroll;
+    scope.tabIscroll  = ListiScroll.handle.tab;
+    scope.pageIscroll = ListiScroll.handle.page;
 
-    $scope.pullDownAction = pullDownAction;
-    $scope.pullUpAction = pullUpAction;
+    scope.loading = false;
 
-    $scope.loading = false;
-
-    function infiniteScroll() {
-        var iscroll  = angular.element('#wrapper1').scope().iscroll;
-
-        // console.group('onScrollEnd1');
-        // console.log('minScrollY', iscroll.minScrollY);
-        // console.log('y', iscroll.y);
-        // console.log('maxScrollY', iscroll.maxScrollY);
-        // console.groupEnd();
-
-       if( iscroll.y <= (iscroll.maxScrollY + 20) ){
-            $scope.loading = true;
-            $timeout(function(){
-                var last = $scope.data[$scope.data.length - 1];
-                for(var i = 1; i <= 10; i++) {
-                    $scope.data.push(last + i);
-                }
-                
-                $timeout(function(){ 
-                    iscroll.refresh();
-                    $scope.loading = false; 
-                });
-            }, 3000);
-       }
+    function addData(until){
+        var last = scope.data.length ? scope.data[scope.data.length - 1] : 0 ;
+        for(var i = 1; i <= until; i++) {
+            scope.data.push(last + i);
+        }
     }
-
-    function onScrollMove(){
-        var calc = (swipeTabs.absDistX/docWidth*100/3);
-        var left = (swipeTabs.dirX > 0) ? calc + x : x - calc ;
-        $scope.barTranslate = {
-            '-webkit-transform': 'translate('+left+'%, 0px)',
-            'transform': 'translate('+left+'%, 0px)'
-        };
-        $scope.$apply();
-    };
-    function onScrollEnd(){
-        if(swipeTabs.absDistX) x = swipeTabs.currPageX * 100;
-
-        angular.forEach($scope.tabs, function(tabs){
-            tabs.selected = false;
-        });
-        $scope.tabs[swipeTabs.currPageX].selected = true;
-        $scope.barTranslate = {
-            '-webkit-transform': 'translate('+x+'%, 0px)',
-            'transform': 'translate('+x+'%, 0px)'
-        };
-        $scope.$apply();
-    };
-
-    function pullDownAction(){
-        var el = $('.tabActive'),
-            index = el.index();
-
-        // get wrapper id as iscroll id
-        var scrollId = el.children().get(0).id;
-
-        // get object iscroll from directive by scroll id
-        var iscroll  = angular.element('#'+scrollId).scope().iscroll;
-
-        setTimeout(function(){ 
-
-            var li, i;
-
-            for (i=0; i<3; i++) {
-                li = compileEl(index, ++generatedCount);
-                $('li:first-child',el).after(li);
-            }
-
-            iscroll.refresh();
-
-        }, 1000);
-    }
-    function pullUpAction(){
-        var el = $('.tabActive'),
-            index = el.index();
-
-        // get wrapper id as iscroll id
-        var scrollId = el.children().get(0).id;
-
-        // get object iscroll from directive by scroll id
-        var iscroll  = angular.element('#'+scrollId).scope().iscroll;
-
-        setTimeout(function(){ 
-            var li, i;
-
-            for (i=0; i<3; i++) {
-                li = compileEl(index, ++generatedCount);
-                $('ul',el).append(li);
-            }
-
-            iscroll.refresh();
-            
-        }, 1000);
-    }
-
     function compileEl(scrollerId, i){
         var li;
         switch(scrollerId){
@@ -294,44 +336,14 @@ function ListCtrl($scope, $timeout, $compile){
                 break;
         }
 
-        var $liScope = $compile(angular.element(li))($scope);
+        var $liScope = $compile(angular.element(li))(scope);
 
-        $scope.$apply();
+        scope.$apply();
 
         return $liScope.get(0);
     }
 
-    function scrollOnLoad(){
-        var wrapperWidth = 0;
-
-        // console.log($scope)
-        // console.log('pageWrapper', angular.element('#pageWrapper').scope())
-        // console.log('wrapper1', angular.element('#wrapper1').scope())
-
-        // get object iscroll from directive
-        swipeTabs = angular.element('#pageWrapper').scope().iscroll;
-
-        updateLayout();
-
-        function updateLayout() {
-
-            var currentTab = 0;
-
-            if (wrapperWidth > 0) {
-                currentTab = - Math.ceil( $('.pageScroller').position().left / wrapperWidth);
-            }
-
-            wrapperWidth = $('#pageWrapper').width();
-
-            $('.pageScroller').css('width', wrapperWidth * 3)
-                .find('.tab').css('width', wrapperWidth);
-
-            swipeTabs.refresh();
-            swipeTabs.scrollToPage(currentTab, 0, 0);
-        }
-    }
-
-    $timeout(scrollOnLoad, 1000);
+    $timeout(ListiScroll.init, 1000);
 }
 
 function listFilterCtrl($scope, $timeout){
