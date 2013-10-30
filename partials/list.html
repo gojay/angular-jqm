@@ -62,17 +62,21 @@
          snap="true" momentum="false" 
          on-scroll-move="onScrollMove()" on-scroll-end="onScrollEnd()">
         <div class="tab" ng-class="{'tabActive':tabs[0].selected}">
-            <div iscroll="wrapper1" bounce="true" transition="true" vertical="true"
-                     pull-refresh="true" 
-                     pull-down="pullDownAction()" 
-                     pull-up="pullUpAction()">
+            <div iscroll="wrapper1" bounce="false" transition="true" vertical="true"
+                    on-scroll-end="infiniteScroll()"
+                    pull-down="pullDownAction()" 
+                    pull-up="pullUpAction()">
                 <ul jqm-listview>
                     <li jqm-li-divider jqm-theme="a">Simple</li>
-                    <li ng-repeat="i in [] | range:20 | fb:f"
+                    <li ng-repeat="i in data | fb:f"
                         jqm-li-link icon="ui-icon-arrow-r">
                         List item {{i}}
                     </li>
                 </ul>
+                <div id="infinite-loading" class="pullUp loading" style="width:100%; margin:15px 0 0 -15px;">
+                    <span class="pullUpIcon"></span>
+                    <span class="pullUpLabel">Loading...</span>
+                </div>
             </div>
         </div>
         <div class="tab" ng-class="{'tabActive':tabs[1].selected}">

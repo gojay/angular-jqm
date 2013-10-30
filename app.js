@@ -114,6 +114,11 @@ module
         animation: 'page-slide',
         controller: ['$scope', TableCtrl]
     });
+    $routeProvider.when("/infinite", {
+        templateUrl: 'partials/infinite.html',
+        animation: 'page-slide',
+        controller: ['$scope', '$timeout', InfiniteCtrl]
+    });
     $routeProvider.otherwise({
         redirectTo: "/"
     });
@@ -148,6 +153,8 @@ function ListCtrl($scope, $timeout, $compile){
         selected: false
     }];
 
+    $scope.data = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20];
+
     $scope.barTranslate = {};
 
     $scope.f = 0;
@@ -164,9 +171,37 @@ function ListCtrl($scope, $timeout, $compile){
 
     $scope.onScrollMove = onScrollMove;
     $scope.onScrollEnd  = onScrollEnd;
+    $scope.infiniteScroll = infiniteScroll;
 
     $scope.pullDownAction = pullDownAction;
     $scope.pullUpAction = pullUpAction;
+
+    $scope.loading = false;
+
+    function infiniteScroll() {
+        var iscroll  = angular.element('#wrapper1').scope().iscroll;
+
+        // console.group('onScrollEnd1');
+        // console.log('minScrollY', iscroll.minScrollY);
+        // console.log('y', iscroll.y);
+        // console.log('maxScrollY', iscroll.maxScrollY);
+        // console.groupEnd();
+
+       if( iscroll.y <= (iscroll.maxScrollY + 20) ){
+            $scope.loading = true;
+            $timeout(function(){
+                var last = $scope.data[$scope.data.length - 1];
+                for(var i = 1; i <= 10; i++) {
+                    $scope.data.push(last + i);
+                }
+                
+                $timeout(function(){ 
+                    iscroll.refresh();
+                    $scope.loading = false; 
+                });
+            }, 3000);
+       }
+    }
 
     function onScrollMove(){
         var calc = (swipeTabs.absDistX/docWidth*100/3);
@@ -351,26 +386,22 @@ function listFilterCtrl($scope, $timeout){
             id: 2
         }
     ];
-    $scope.materials = [
-        {
-            name: "ABC",
-            groups: [
-                {
-                    id: 1
-                }, 
-                {
-                    id: 2
-                }
-            ]
-        }, 
-        {
-            name: "DEF",
-            groups: [
-                {
-                    id: 1
-                }
-            ]
-        }
+    $scope.materials = [{
+        name: "ABC",
+        groups: [
+            {
+                id: 1
+            }, 
+            {
+                id: 2
+            }
+        ]}, {
+        name: "DEF",
+        groups: [
+            {
+                id: 1
+            }
+        ]}
     ];
     $scope.filterByGroup = function (group) {
         return function (item) {
@@ -443,14 +474,16 @@ function PanelCtrl($scope, $compile, $document, $swipe, $timeout){
         }
 
         function updateElementPosition(pos){
+            // pos = Math.abs(pos - startCoords.x);
             var panelClass = $panel.get(0).className;
             // reveal
             if(panelClass.match(/reveal/)) { 
-                pos = Math.abs(pos - startCoords.x);
+                // pos = Math.abs(pos - startCoords.x);
                 var val = panelValues.reveal;
                 var percent = parseInt(pos/width * 100);
-                if(percent >= val) percent = val;
+                if(percent > val) percent = val;
                 $swiperContent.css(cssPrefix('transform', 'translate3d(' + percent + '%,0,0)'));
+                // $swiperContent.css('left', percent + '%');
             // overlay
             } else if(panelClass.match(/overlay/)) { 
                 var val = panelValues.overlay;
@@ -467,7 +500,7 @@ function PanelCtrl($scope, $compile, $document, $swipe, $timeout){
             start: function(coords) {
                 startCoords = coords;
                 
-                if($scope.state.openPanel == null){
+                if($panel == null){
                     if(coords.x >= boundR){
                         $panel = angular.element('.ui-panel-position-right')
                                         .removeClass('ui-panel-closed')
@@ -475,15 +508,12 @@ function PanelCtrl($scope, $compile, $document, $swipe, $timeout){
                                         .css('visibility','visible');
                        updateElementPosition(boundR);
                     } else if(coords.x <= boundL) {
-                        $swiperContent.addClass('ui-panel-content-wrap-open ui-panel-content-wrap-position-left ui-panel-content-wrap-display-reveal');
                         $panel = angular.element('.ui-panel-position-left')
-                                        .removeClass('ui-panel-closed')
-                                        .addClass('ui-panel-opened ui-panel-open')
                                         .css('visibility','visible');
-                       updateElementPosition(boundL);
+                       updateElementPosition(coords.x);
                     }
                 } else {
-                    $panel = null;
+                    // $panel = null;
                     $scope.state.openPanel = null;
                 }
 
@@ -520,6 +550,14 @@ function PanelCtrl($scope, $compile, $document, $swipe, $timeout){
                 var r = startCoords.x - endCoords.x;
                 var f = fullSwipe(endCoords);
                 $scope.state.openPanel = (panelClass.match(/left/)) ? 'left' : 'right';
+
+                // if(panelClass.match(/left/)){
+                //     $swiperContent.css('left', 0);
+                //     $scope.state.openPanel = 'left';
+                // } else {
+                //     $panel.css('width', panelValues.overlay + '%');
+                //      $scope.state.openPanel = 'right';
+                // }
                 
                 // if(r <= 0 || !f){
                 //     $scope.state.openPanel = null;
@@ -785,4 +823,20 @@ function TableCtrl(scope){
             reviews: 87
         }
     ]
+}
+
+function InfiniteCtrl(scope, $timeout){
+    scope.images = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+    scope.loading = false;
+
+    scope.loadMore = function() {
+        scope.loading = true;
+        $timeout(function(){
+            var last = scope.images[scope.images.length - 1];
+            for(var i = 1; i <= 8; i++) {
+              scope.images.push(last + i);
+            }
+            scope.loading = false;
+        }, 3000);
+    };
 }
