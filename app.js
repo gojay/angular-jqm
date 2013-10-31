@@ -61,6 +61,23 @@ module
             }
         }
     });
+    $routeProvider.when("/list/refresh", {
+        templateUrl: 'partials/list-refresh.html',
+        animation: 'page-slide',
+        controller: ['$scope', '$timeout', '$compile', ListRefreshCtrl],
+        resolve: {
+            delay: function($q, $timeout, $loadDialog) {
+                var delay = $q.defer();
+                $loadDialog.setTheme('a').show('Loading...');
+                $timeout(function(){
+                    delay.resolve();
+                    $loadDialog.hide();
+                }, 1000);
+                // return delay.promise;
+                return delay.promise;
+            }
+        }
+    });
     $routeProvider.when("/filter", {
         templateUrl: 'partials/listFilter.html',
         animation: 'page-slide',
@@ -387,6 +404,60 @@ function ListInfiniteCtrl(scope, $timeout, $compile){
         }
     }
     function compileEl(scrollerId, i){
+        var li = '<li jqm-li-link icon="ui-icon-arrow-r">List new item '+ i +'</li>';
+        var $liScope = $compile(angular.element(li))(scope);
+        scope.$apply();
+        return $liScope.get(0);
+    }
+
+    addData(20);
+}
+function ListRefreshCtrl(scope, $timeout, $compile){
+    var index = 0;
+
+    scope.data = [];
+
+    scope.pullDownAction = function(){
+        var iscroll  = angular.element('#wrapper').scope().iscroll;
+
+        $timeout(function(){ 
+
+            var li, i;
+
+            for (i=0; i<3; i++) {
+                li = compileEl(++index);
+                $('ul').prepend(li);
+            }
+
+            iscroll.refresh();
+
+        }, 1000);
+    },
+    scope.pullUpAction = function(){
+
+        // get object iscroll from directive by scroll id
+        var iscroll  = angular.element('#wrapper').scope().iscroll;
+
+        $timeout(function(){ 
+            var li, i;
+
+            for (i=0; i<3; i++) {
+                li = compileEl(++index);
+                $('ul').append(li);
+            }
+
+            iscroll.refresh();
+            
+        }, 1000);
+    }
+
+    function addData(until){
+        var last = scope.data.length ? scope.data[scope.data.length - 1] : 0 ;
+        for(var i = 1; i <= until; i++) {
+            scope.data.push(last + i);
+        }
+    }
+    function compileEl(i){
         var li = '<li jqm-li-link icon="ui-icon-arrow-r">List new item '+ i +'</li>';
         var $liScope = $compile(angular.element(li))(scope);
         scope.$apply();
