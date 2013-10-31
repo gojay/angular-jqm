@@ -1,16 +1,50 @@
 <div jqm-page>
-    <div jqm-header>
-        <a jqm-button jqm-theme="a" href="#/" icon="ui-icon-home" buttonpos="left" shadow="true">Home</a>
-        <h1>iScroll Refresh</h1>
+    <div jqm-panel-container="state.openPanel">
+        <div class="ui-body-b">
+            <div jqm-header>
+                <a jqm-button jqm-theme="b" href="#/" icon="ui-icon-home" buttonpos="left" shadow="true">Home</a>
+                <h1>iScroll Basic</h1>
+                <div jqm-button jqm-theme="b" 
+                     icon="ui-icon-bars" iconpos="notext" buttonpos="right" shadow="false"
+                     ng-click="state.openPanel='right'"></div>
+            </div>
+            <div class="panel-content ui-content" style="height:100%;">
+                <div iscroll="wrapper" vertical="true">
+                    <ul jqm-listview>
+                        <li ng-repeat="i in data"
+                            jqm-li-link icon="ui-icon-arrow-r">
+                            List item {{i}}
+                        </li>
+                    </ul>
+                    <div style="height:40px"></div>
+                </div>
+            </div>
+        </div>
+        <!-- panel -->
+        <div jqm-panel position="right" jqm-theme="b">
+            <div jqm-header style="left:0">
+                <h1>Examples</h1>
+            </div>
+            <div style="position:relative; top:42px" jqm-theme="b">
+                <ul jqm-listview>
+                    <li icon="ui-icon-arrow-r"
+                        jqm-li-link="#/list/filter">
+                        List Filter
+                    </li>
+                    <li icon="ui-icon-arrow-r"
+                        jqm-li-link="#/list/infinite">
+                        List Infinite
+                    </li>
+                    <li icon="ui-icon-arrow-r"
+                        jqm-li-link="#/list/refresh">
+                        List Pull Refresh
+                    </li>
+                    <li icon="ui-icon-arrow-r"
+                        jqm-li-link="#/list/tab/">
+                        List Tabs
+                    </li>
+                </ul>
+            </div>
+        </div>
     </div>
-    <div iscroll="wrapper" vertical="true">
-        <ul jqm-listview>
-            <li ng-repeat="i in data"
-                jqm-li-link icon="ui-icon-arrow-r">
-                List item {{i}}
-            </li>
-        </ul>
-        <div style="height:40px"></div>
-    </div>
-    
 </div>

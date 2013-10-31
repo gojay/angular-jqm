@@ -745,7 +745,7 @@
 	                iscroll.refresh();
 	            };
 
-	            $timeout(iscrollOnLoad);
+	            $timeout(iscrollOnLoad, 800);
 	        }
 	    }
 

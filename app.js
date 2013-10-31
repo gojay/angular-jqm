@@ -95,8 +95,8 @@ module
             }
         }
     });
-    $routeProvider.when("/filter", {
-        templateUrl: 'partials/listFilter.html',
+    $routeProvider.when("/list/filter", {
+        templateUrl: 'partials/list-filter.html',
         animation: 'page-slide',
         controller: ['$scope', '$timeout', listFilterCtrl],
         resolve: {
@@ -179,6 +179,7 @@ function MainCtrl($scope){
 }
 
 function ListCtrl(scope, $timeout, $compile){
+    scope.state = {};
     scope.data = [];
     addData(50);
     function addData(until){
@@ -193,6 +194,8 @@ function ListCtrl(scope, $timeout, $compile){
 // demo & documentation : http://binarymuse.github.io/ngInfiniteScroll
 function ListTabCtrl(scope, $routeParams, $timeout, $compile){
     var x = 0;
+
+    var loadTimeout = $routeParams.timeout ? $routeParams.timeout : 1000 ;
 
     var swipeTabs,
         pullDownEl, pullDownOffset,
@@ -374,7 +377,7 @@ function ListTabCtrl(scope, $routeParams, $timeout, $compile){
         var li;
         switch(scrollerId){
             default:
-                li = '<li jqm-li-link icon="ui-icon-arrow-r">List new item '+ i +'</li>';
+                li = '<li jqm-li-link icon="ui-icon-arrow-r">Generated item '+ i +'</li>';
                 break;
             case 1:
                 li = '<li jqm-li-link icon="ui-icon-arrow-r">'+
@@ -426,7 +429,7 @@ function ListInfiniteCtrl(scope, $timeout, $compile){
         }
     }
     function compileEl(scrollerId, i){
-        var li = '<li jqm-li-link icon="ui-icon-arrow-r">List new item '+ i +'</li>';
+        var li = '<li jqm-li-link icon="ui-icon-arrow-r">Generated item '+ i +'</li>';
         var $liScope = $compile(angular.element(li))(scope);
         scope.$apply();
         return $liScope.get(0);
@@ -454,8 +457,6 @@ function ListRefreshCtrl(scope, $timeout, $compile){
         }, 1000);
     },
     scope.pullUpAction = function(){
-
-        // get object iscroll from directive by scroll id
         var iscroll  = angular.element('#wrapper').scope().iscroll;
 
         $timeout(function(){ 
@@ -478,7 +479,7 @@ function ListRefreshCtrl(scope, $timeout, $compile){
         }
     }
     function compileEl(i){
-        var li = '<li jqm-li-link icon="ui-icon-arrow-r">List new item '+ i +'</li>';
+        var li = '<li jqm-li-link icon="ui-icon-arrow-r">Generated item '+ i +'</li>';
         var $liScope = $compile(angular.element(li))(scope);
         scope.$apply();
         return $liScope.get(0);

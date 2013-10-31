@@ -1213,6 +1213,16 @@ jqmModule.directive('jqmLiThumb', [function() {
         }
     };
 }]);
+jqmModule.directive('jqmLiActive', [function() {
+    return {
+        restrict: 'A',
+        require: '^jqmLiLink',
+        link: function(scope, elm, attr, jqmLiLinkCtrl) {
+            jqmLiLinkCtrl.$scope.isActive = true;
+            elm.addClass('ui-btn-active');
+        }
+    };
+}]);
 
 /**
  * @ngdoc directive
@@ -3534,6 +3544,7 @@ angular.module("templates/jqmLiLink.html", []).run(["$templateCache", function($
     "<li class=\"ui-li ui-btn\" jqm-scope-as=\"jqmLiLink\"\n" +
     "jqm-once-class=\"{{$scopeAs.jqmLiLink.icon ? 'ui-li-has-arrow ui-btn-icon-'+$scopeAs.jqmLiLink.iconpos : ''}} ui-btn-up-{{$scopeAs.jqmLiLink.$theme}}\"\n" +
     "  jqm-class=\"{'ui-first-child': $scopeAs.jqmLiLink.$position.first, \n" +
+    "    'ui-btn-active': $scopeAs.jqmLiLink.isActive, \n" +
     "    'ui-last-child': $scopeAs.jqmLiLink.$position.last, \n" +
     "    'ui-li-has-thumb': $scopeAs.jqmLiLink.hasThumb, \n" +
     "    'ui-li-has-count': $scopeAs.jqmLiLink.hasCount}\">\n" +

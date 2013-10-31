@@ -3,25 +3,60 @@
         padding: 15px 15px 0; 
     }
 </style>
-<div jqm-page>
-    <div jqm-header>
-        <a jqm-button jqm-theme="a" href="#/" icon="ui-icon-home" buttonpos="left" shadow="true">Home</a>
-        <h1>iScroll Infinite</h1>
-    </div>
-    <div iscroll="wrapper" bounce="false" transition="true" vertical="true"
-            scroller-content-class="ui-scroller-content-infinite"
-            on-scroll-end="infiniteScroll()">
-        <ul jqm-listview>
-            <li ng-repeat="i in data"
-                jqm-li-link icon="ui-icon-arrow-r">
-                List item {{i}}
-            </li>
-        </ul>
-        <div id="infinite-loading" class="pullUp loading" style="width:100%; margin:15px 0 0 -15px;">
-            <span class="pullUpIcon"></span>
-            <span class="pullUpLabel">Loading...</span>
+<div jqm-page ng-init="state={}">
+    <div jqm-panel-container="state.openPanel">
+        <div class="ui-body-b">
+            <div jqm-header>
+                <a jqm-button jqm-theme="b" href="#/list/iscroll" icon="ui-icon-back" iconpos="notext" iconshadow="true" buttonpos="left" shadow="false"></a>
+                <h1>iScroll Infinite</h1>
+                <div jqm-button jqm-theme="b" 
+                     icon="ui-icon-bars" iconpos="notext" buttonpos="right" shadow="false"
+                     ng-click="state.openPanel='right'"></div>
+            </div>
+            <div class="panel-content ui-content" style="height:100%;">
+                <div iscroll="wrapper" bounce="false" transition="true" vertical="true"
+                        scroller-content-class="ui-scroller-content-infinite"
+                        on-scroll-end="infiniteScroll()">
+                    <ul jqm-listview>
+                        <li ng-repeat="i in data"
+                            jqm-li-link icon="ui-icon-arrow-r">
+                            List item {{i}}
+                        </li>
+                    </ul>
+                    <div id="infinite-loading" class="pullUp loading" style="width:100%; margin:15px 0 0 -15px;">
+                        <span class="pullUpIcon"></span>
+                        <span class="pullUpLabel">Loading...</span>
+                    </div>
+                    <div style="height:40px"></div>
+                </div>
+            </div>
         </div>
-        <div style="height:40px"></div>
+        <!-- panel -->
+        <div jqm-panel position="right" jqm-theme="b">
+            <div jqm-header style="left:0">
+                <h1>Examples</h1>
+            </div>
+            <div style="position:relative; top:42px" jqm-theme="b">
+                <ul jqm-listview>
+                    <li icon="ui-icon-arrow-r"
+                        jqm-li-link="#/list/filter">
+                        List Filter
+                    </li>
+                    <li icon="ui-icon-arrow-r"
+                        jqm-li-link
+                        jqm-li-active>
+                        List Infinite
+                    </li>
+                    <li icon="ui-icon-arrow-r"
+                        jqm-li-link="#/list/refresh">
+                        List Pull Refresh
+                    </li>
+                    <li icon="ui-icon-arrow-r"
+                        jqm-li-link="#/list/tab/">
+                        List Tabs
+                    </li>
+                </ul>
+            </div>
+        </div>
     </div>
-    
 </div>
