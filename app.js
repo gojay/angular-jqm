@@ -449,7 +449,7 @@ function ListRefreshCtrl(scope, $timeout, $compile){
 
             for (i=0; i<3; i++) {
                 li = compileEl(++index);
-                $('ul').prepend(li);
+                $('ul:first').prepend(li);
             }
 
             iscroll.refresh();
@@ -464,7 +464,7 @@ function ListRefreshCtrl(scope, $timeout, $compile){
 
             for (i=0; i<3; i++) {
                 li = compileEl(++index);
-                $('ul').append(li);
+                $('ul:first').append(li);
             }
 
             iscroll.refresh();

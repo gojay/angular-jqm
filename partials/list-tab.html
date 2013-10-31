@@ -35,7 +35,7 @@
 </style>
 <div jqm-page ng-init="state={}">
     <div jqm-panel-container="state.openPanel">
-        <div class="ui-body-b">
+        <div class="ui-body-b" style="position: relative;">
             <div jqm-header>
                 <a jqm-button jqm-theme="b" href="#/list/iscroll" icon="ui-icon-back" iconpos="notext" iconshadow="true" buttonpos="left" shadow="false"></a>
                 <h1>iScroll Tab</h1>
@@ -56,7 +56,7 @@
                     </ul>
                 </div>
             </div>
-            <div class="panel-content ui-content" style="height:100%;">
+            <div class="panel-content ui-content jqm-content-with-header jqm-content-with-footer">
                 <div iscroll="tabWrapper" 
                      scroller-class="tabScroller" scroller-content-class="ui-scroller-content-tab"
                      snap="true" momentum="false" 
