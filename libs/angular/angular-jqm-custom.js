@@ -654,12 +654,11 @@
 
 	            var options = {
 	                bounce        : isDef(attr.bounce)     ? attr.bounce==='true' : false,
-	                useTransition : isDef(attr.transition) ? attr.transition==='true' : false,
+	                useTransition : isDef(attr.transition) ? attr.transition==='true' : true,
 	                snap          : isDef(attr.snap)       ? attr.snap==='true' : false,
 	                momentum      : isDef(attr.momentum)   ? attr.momentum==='true' : true,
 	                vScrollbar    : isDef(attr.vertical)   ? attr.vertical==='true' : false,
 	                hScrollbar    : isDef(attr.horizontal) ? attr.horizontal==='true' : false,
-	                lockDirection : true,
 	                onBeforeScrollStart : function(e) {
 				        var target = e.target;
 						while (target.nodeType != 1) target = target.parentNode;
@@ -746,7 +745,7 @@
 	                iscroll.refresh();
 	            };
 
-	            $timeout(iscrollOnLoad, 400);
+	            $timeout(iscrollOnLoad);
 	        }
 	    }
 

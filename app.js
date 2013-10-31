@@ -27,6 +27,23 @@ module
         // controller: ['$scope', '$timeout', '$document', '$swipe', MainCtrl],
         // back: true
     });
+    $routeProvider.when("/list/iscroll", {
+        templateUrl: 'partials/list-iscroll.html',
+        animation: 'page-slide',
+        controller: ['$scope', '$timeout', '$compile', ListCtrl],
+        resolve: {
+            delay: function($q, $timeout, $loadDialog) {
+                var delay = $q.defer();
+                $loadDialog.setTheme('a').show('Loading...');
+                $timeout(function(){
+                    delay.resolve();
+                    $loadDialog.hide();
+                }, 1000);
+                // return delay.promise;
+                return delay.promise;
+            }
+        }
+    });
     $routeProvider.when("/list/tab/:timeout", {
         templateUrl: 'partials/list-tab.html',
         animation: 'page-slide',
@@ -161,15 +178,21 @@ function NoopCtrl() {}
 function MainCtrl($scope){
 }
 
+function ListCtrl(scope, $timeout, $compile){
+    scope.data = [];
+    addData(50);
+    function addData(until){
+        for(var i = 1; i <= until; i++) {
+            scope.data.push(i);
+        }
+    }
+}
 // coba tambah fitur baru : infinite scroll
 // module : ngInfiniteScroll
 // source :  https://github.com/BinaryMuse/ngInfiniteScroll 
 // demo & documentation : http://binarymuse.github.io/ngInfiniteScroll
 function ListTabCtrl(scope, $routeParams, $timeout, $compile){
     var x = 0;
-
-    var loadTimeout = $routeParams.timeout ? $routeParams.timeout : 1000 ;
-    console.log('loadTimeout', loadTimeout);
 
     var swipeTabs,
         pullDownEl, pullDownOffset,
@@ -320,8 +343,7 @@ function ListTabCtrl(scope, $routeParams, $timeout, $compile){
         selected: false
     }];
 
-    scope.data = [];
-    addData(20);
+    scope.data = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20];
 
     scope.barTranslate = {};
 
@@ -381,7 +403,7 @@ function ListTabCtrl(scope, $routeParams, $timeout, $compile){
 }
 function ListInfiniteCtrl(scope, $timeout, $compile){
 
-    scope.data = [];
+    scope.data = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20];
 
     scope.infiniteScroll = function(){
         var iscroll = angular.element('#wrapper').scope().iscroll;
@@ -409,13 +431,11 @@ function ListInfiniteCtrl(scope, $timeout, $compile){
         scope.$apply();
         return $liScope.get(0);
     }
-
-    addData(20);
 }
 function ListRefreshCtrl(scope, $timeout, $compile){
     var index = 0;
 
-    scope.data = [];
+    scope.data = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20];
 
     scope.pullDownAction = function(){
         var iscroll  = angular.element('#wrapper').scope().iscroll;
@@ -463,8 +483,6 @@ function ListRefreshCtrl(scope, $timeout, $compile){
         scope.$apply();
         return $liScope.get(0);
     }
-
-    addData(20);
 }
 
 function listFilterCtrl($scope, $timeout){
