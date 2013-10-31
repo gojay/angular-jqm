@@ -27,10 +27,10 @@ module
         // controller: ['$scope', '$timeout', '$document', '$swipe', MainCtrl],
         // back: true
     });
-    $routeProvider.when("/list", {
-        templateUrl: 'partials/list.html',
+    $routeProvider.when("/list/tab/:timeout", {
+        templateUrl: 'partials/list-tab.html',
         animation: 'page-slide',
-        controller: ['$scope', '$timeout', '$compile', ListCtrl],
+        controller: ['$scope', '$routeParams', '$timeout', '$compile', ListTabCtrl],
         resolve: {
             delay: function($q, $timeout, $loadDialog) {
                 var delay = $q.defer();
@@ -38,18 +38,16 @@ module
                 $timeout(function(){
                     delay.resolve();
                     $loadDialog.hide();
-
                 }, 1000);
                 // return delay.promise;
-                // $loadDialog.waitFor(delay.promise, 'Loading...');
                 return delay.promise;
             }
         }
     });
-    $routeProvider.when("/list2", {
-        templateUrl: 'partials/list2.html',
+    $routeProvider.when("/list/infinite", {
+        templateUrl: 'partials/list-infinite.html',
         animation: 'page-slide',
-        controller: ['$scope', '$timeout', '$compile', ListCtrl2],
+        controller: ['$scope', '$timeout', '$compile', ListInfiniteCtrl],
         resolve: {
             delay: function($q, $timeout, $loadDialog) {
                 var delay = $q.defer();
@@ -57,7 +55,6 @@ module
                 $timeout(function(){
                     delay.resolve();
                     $loadDialog.hide();
-
                 }, 1000);
                 // return delay.promise;
                 return delay.promise;
@@ -77,7 +74,6 @@ module
                     $loadDialog.hide();
                 }, 1000);
                 // return delay.promise;
-                // $loadDialog.waitFor(delay.promise, 'Loading...');
                 return delay.promise;
             }
         }
@@ -152,8 +148,11 @@ function MainCtrl($scope){
 // module : ngInfiniteScroll
 // source :  https://github.com/BinaryMuse/ngInfiniteScroll 
 // demo & documentation : http://binarymuse.github.io/ngInfiniteScroll
-function ListCtrl(scope, $timeout, $compile){
+function ListTabCtrl(scope, $routeParams, $timeout, $compile){
     var x = 0;
+
+    var loadTimeout = $routeParams.timeout ? $routeParams.timeout : 1000 ;
+    console.log('loadTimeout', loadTimeout);
 
     var swipeTabs,
         pullDownEl, pullDownOffset,
@@ -361,77 +360,25 @@ function ListCtrl(scope, $timeout, $compile){
         return $liScope.get(0);
     }
 
-    $timeout(ListiScroll.init, 1000);
+    $timeout(ListiScroll.init, loadTimeout);
 }
-function ListCtrl2(scope, $timeout, $compile){
-    var x = 0;
-
-    var swipeTabs,
-        pullDownEl, pullDownOffset,
-        pullUpEl, pullUpOffset,
-        generatedCount = 0;
-
-    var ListiScroll = {
-        init: function(){
-            var wrapperWidth = 0;
-
-            // get object iscroll from directive
-            swipeTabs = angular.element('#tabWrapper').scope().iscroll;
-
-            updateLayout();
-
-            function updateLayout() {
-
-                var currentTab = 0;
-
-                if (wrapperWidth > 0) {
-                    currentTab = - Math.ceil( $('.tabScroller').position().left / wrapperWidth);
-                }
-
-                wrapperWidth = $('#tabWrapper').width();
-
-                $('.tabScroller').css('width', wrapperWidth * 3)
-                    .find('.tab').css('width', wrapperWidth);
-
-                swipeTabs.refresh();
-                swipeTabs.scrollToPage(currentTab, 0, 0);
-            }
-        },
-        handle: {
-            page: {
-                onScrollMove: function(){
-                    var tabActive = $('.tabActive');
-                    // get wrapper id as iscroll id
-                    var scrollId = tabActive.children().get(0).id;
-                    // get object iscroll from directive by scroll id
-                    var iscroll  = angular.element('#'+scrollId).scope().iscroll;
-
-                    // if( iscroll.x ) e.preventDefault();
-
-                    console.log('onScrollMove', iscroll);
-                },
-                infiniteScroll: function(){
-                    var iscroll  = angular.element('#wrapper1').scope().iscroll;
-
-                    if( iscroll.y <= (iscroll.maxScrollY + 20) ){
-                        scope.loading = true;
-                        $timeout(function(){
-                            addData(10);
-                            $timeout(function(){ 
-                                iscroll.refresh();
-                                scope.loading = false; 
-                            });
-                        }, 3000);
-                    }
-                }
-            }
-        }
-    };
+function ListInfiniteCtrl(scope, $timeout, $compile){
 
     scope.data = [];
-    addData(20);
 
-    scope.pageIscroll = ListiScroll.handle.page;
+    scope.infiniteScroll = function(){
+        var iscroll = angular.element('#wrapper').scope().iscroll;
+
+        if( iscroll.y <= (iscroll.maxScrollY + 20) ){
+            scope.loading = true;
+            $timeout(function(){
+                addData(10);
+                $timeout(function(){ 
+                    iscroll.refresh();
+                });
+            }, 3000);
+        }
+    };
 
     function addData(until){
         var last = scope.data.length ? scope.data[scope.data.length - 1] : 0 ;
@@ -446,8 +393,9 @@ function ListCtrl2(scope, $timeout, $compile){
         return $liScope.get(0);
     }
 
-    $timeout(ListiScroll.init, 1000);
+    addData(20);
 }
+
 function listFilterCtrl($scope, $timeout){
     $scope.friends = {
         'A':[

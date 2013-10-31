@@ -34,6 +34,18 @@
     }
 </style>
 <div jqm-page>
+    <div jqm-header>
+        <a jqm-button jqm-theme="a" href="#/" icon="ui-icon-home" buttonpos="left" shadow="true">Home</a>
+        <h1>List iScroll</h1>
+        <a jqm-button jqm-theme="b" href="#/filter" icon="ui-icon-search" iconpos="right" buttonpos="right" shadow="false">Filter</a>
+        <!-- <div class="segmented-control ui-bar-d">
+            <div jqm-controlgroup type="horizontal">
+              <a href jqm-button mini="true" jqm-theme="d" ng-click="setF(0)" ng-class="{true:'ui-control-active', false:'ui-control-inactive'}[f==0]">All</a>
+              <a href jqm-button mini="true" jqm-theme="d" ng-click="setF(6)" ng-class="{true:'ui-control-active', false:'ui-control-inactive'}[f==6]">>= 6</a>
+              <a href jqm-button mini="true" jqm-theme="d" ng-click="setF(15)" ng-class="{true:'ui-control-active', false:'ui-control-inactive'}[f==15]">>= 15</a>
+            </div>
+        </div> -->
+    </div>
     <div jqm-footer jqm-theme="a">
         <div class="tabbar ui-navbar">
             <div class="nav" ng-style="barTranslate"></div>
@@ -46,18 +58,6 @@
                 </li>
             </ul>
         </div>
-    </div>
-    <div jqm-header>
-        <a jqm-button jqm-theme="a" href="#/" icon="ui-icon-home" buttonpos="left" shadow="true">Home</a>
-        <h1>List iScroll</h1>
-        <a jqm-button jqm-theme="b" href="#/filter" icon="ui-icon-search" iconpos="right" buttonpos="right" shadow="false">Filter</a>
-        <!-- <div class="segmented-control ui-bar-d">
-            <div jqm-controlgroup type="horizontal">
-              <a href jqm-button mini="true" jqm-theme="d" ng-click="setF(0)" ng-class="{true:'ui-control-active', false:'ui-control-inactive'}[f==0]">All</a>
-              <a href jqm-button mini="true" jqm-theme="d" ng-click="setF(6)" ng-class="{true:'ui-control-active', false:'ui-control-inactive'}[f==6]">>= 6</a>
-              <a href jqm-button mini="true" jqm-theme="d" ng-click="setF(15)" ng-class="{true:'ui-control-active', false:'ui-control-inactive'}[f==15]">>= 15</a>
-            </div>
-        </div> -->
     </div>
 
     <div iscroll="tabWrapper" 
