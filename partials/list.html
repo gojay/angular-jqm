@@ -4,7 +4,8 @@
         position:absolute;
         z-index:1;
         overflow:hidden;
-        top:41px;
+        /*top:41px;*/
+        top:0;
         right:0;
         bottom:0;
         left:0;
@@ -38,9 +39,9 @@
             <div class="nav" ng-style="barTranslate"></div>
             <ul class="ui-grid-b">
                 <li ng-class="{0:'ui-block-a', 1:'ui-block-b', 2:'ui-block-c'}[$index]" ng-repeat="tab in tabs">
-                    <a href id="home" ng-class="{'ui-btn-active': tab.selected}" 
+                    <a href ng-class="{'ui-btn-active': tab.selected}" 
                         jqm-button jqm-theme="a" 
-                        icon="ui-icon-star" iconpos="top" corners="false"
+                        icon="ui-icon-star" iconpos="top" corners="false" shadow="false"
                         ng-click="setTab($index)">{{tab.title}}</a>
                 </li>
             </ul>
@@ -50,13 +51,13 @@
         <a jqm-button jqm-theme="a" href="#/" icon="ui-icon-home" buttonpos="left" shadow="true">Home</a>
         <h1>List iScroll</h1>
         <a jqm-button jqm-theme="b" href="#/filter" icon="ui-icon-search" iconpos="right" buttonpos="right" shadow="false">Filter</a>
-        <div class="segmented-control ui-bar-d">
+        <!-- <div class="segmented-control ui-bar-d">
             <div jqm-controlgroup type="horizontal">
               <a href jqm-button mini="true" jqm-theme="d" ng-click="setF(0)" ng-class="{true:'ui-control-active', false:'ui-control-inactive'}[f==0]">All</a>
               <a href jqm-button mini="true" jqm-theme="d" ng-click="setF(6)" ng-class="{true:'ui-control-active', false:'ui-control-inactive'}[f==6]">>= 6</a>
               <a href jqm-button mini="true" jqm-theme="d" ng-click="setF(15)" ng-class="{true:'ui-control-active', false:'ui-control-inactive'}[f==15]">>= 15</a>
             </div>
-        </div>
+        </div> -->
     </div>
 
     <div iscroll="tabWrapper" 
@@ -72,7 +73,7 @@
                     pull-down="pageIscroll.pullDownAction()" 
                     pull-up="pageIscroll.pullUpAction()">
                 <ul jqm-listview>
-                    <li jqm-li-divider jqm-theme="a">Simple</li>
+                    <li jqm-li-divider jqm-theme="b">Infinite</li>
                     <li ng-repeat="i in data | fb:f"
                         jqm-li-link icon="ui-icon-arrow-r">
                         List item {{i}}
@@ -90,7 +91,7 @@
                     pull-down="pageIscroll.pullDownAction()" 
                     pull-up="pageIscroll.pullUpAction()">
                 <ul jqm-listview>
-                    <li jqm-li-divider jqm-theme="a">Description</li>
+                    <li jqm-li-divider jqm-theme="c">Pull Refresh</li>
                     <li ng-repeat="i in [] | range:10 | fb:f"
                         jqm-li-link icon="ui-icon-arrow-r">
                         <h4 class="ui-li-heading">Kitten {{i}}</h4>
@@ -105,7 +106,7 @@
                     pull-down="pageIscroll.pullDownAction()" 
                     pull-up="pageIscroll.pullUpAction()">
                 <ul jqm-listview>
-                    <li jqm-li-divider jqm-theme="c">Custom</li>
+                    <li jqm-li-divider jqm-theme="d">Custom</li>
                     <li ng-repeat="i in [] | range:10 | fb:f"
                         jqm-li-link icon="ui-icon-arrow-r">
                         <img src="http://placekitten.com/80/80" jqm-li-thumb />
