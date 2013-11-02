@@ -651,6 +651,7 @@
 	            scope.scrollerClass  	   = isDef(attr.scrollerClass) ? attr.scrollerClass : 'scroller' ;
 	            scope.scrollerContentClass = isDef(attr.scrollerContentClass) ? attr.scrollerContentClass : 'ui-scroller-content' ;
 	            scope.pullRefresh 		   = isDef(attr.pullRefresh) ? attr.pullRefresh==="true" : false ;
+	            scope.infinite 		       = isDef(attr.infinite) ? attr.infinite==="true" : false ;
 
 	            var options = {
 	                bounce        : isDef(attr.bounce)     ? attr.bounce==='true' : false,
@@ -686,59 +687,61 @@
 
 	            function iscrollOnLoad(){
 	            
-	            	if( scope.pullRefresh ){
+	            	if( scope.pullRefresh && isDef(attr.pullDown) && isDef(attr.pullUp) ){
 	            		var scrollerEl = angular.element(element);
 		                var pullDownEl = scrollerEl.find('.pullDown').get(0);
 		                var pullUpEl   = scrollerEl.find('.pullUp').get(0);
 		                var pullDownOffset = pullDownEl.offsetHeight;
 		                var pullUpOffset   = pullUpEl.offsetHeight;
+
+		                // default setting "pull refresh"
+		                var refreshOption = {
+		                    topOffset: pullDownOffset,
+		                    onRefresh: function () {
+		                        if (pullDownEl.className.match('loading')) {
+		                            pullDownEl.className = 'pullDown';
+		                            pullDownEl.querySelector('.pullDownLabel').innerHTML = 'Pull down to refresh...';
+		                        } else if (pullUpEl.className.match('loading')) {
+		                            pullUpEl.className = 'pullUp';
+		                            pullUpEl.querySelector('.pullUpLabel').innerHTML = 'Pull up to load more...';
+		                        }
+		                    },
+		                    onScrollMove: function () {
+		                        if (this.y > 5 && !pullDownEl.className.match('flip')) {
+		                            pullDownEl.className += ' flip';
+		                            pullDownEl.querySelector('.pullDownLabel').innerHTML = 'Release to refresh...';
+		                            this.minScrollY = 0;
+		                        } else if (this.y < 5 && pullDownEl.className.match('flip')) {
+		                            pullDownEl.className = 'pullDown';
+		                            pullDownEl.querySelector('.pullDownLabel').innerHTML = 'Pull down to refresh...';
+		                            this.minScrollY = -pullDownOffset;
+		                        } else if (this.y < (this.maxScrollY - 5) && !pullUpEl.className.match('flip')) {
+		                            pullUpEl.className += ' flip';
+		                            pullUpEl.querySelector('.pullUpLabel').innerHTML = 'Release to refresh...';
+		                            this.maxScrollY = this.maxScrollY;
+		                        } else if (this.y > (this.maxScrollY + 5) && pullUpEl.className.match('flip')) {
+		                            pullUpEl.className = 'pullDown';
+		                            pullUpEl.querySelector('.pullUpLabel').innerHTML = 'Pull up to load more...';
+		                            this.maxScrollY = pullUpOffset;
+		                        }
+		                    },
+		                    onScrollEnd: function () {
+		                        if (pullDownEl.className.match('flip')) {
+		                            pullDownEl.className += ' loading';
+		                            pullDownEl.querySelector('.pullDownLabel').innerHTML = 'Loading...';                
+		                            scope.pullDown();
+		                        } else if (pullUpEl.className.match('flip')) {
+		                            pullUpEl.className += ' loading';
+		                            pullUpEl.querySelector('.pullUpLabel').innerHTML = 'Loading...';                
+		                            scope.pullUp();
+		                        }
+		                    }
+		                }
+
+	                	angular.extend(options, refreshOption);
 	            	}
 
-	                // default setting "pull refresh"
-	                var refreshOption = {
-	                    topOffset: pullDownOffset,
-	                    onRefresh: function () {
-	                        if (pullDownEl.className.match('loading')) {
-	                            pullDownEl.className = 'pullDown';
-	                            pullDownEl.querySelector('.pullDownLabel').innerHTML = 'Pull down to refresh...';
-	                        } else if (pullUpEl.className.match('loading')) {
-	                            pullUpEl.className = 'pullUp';
-	                            pullUpEl.querySelector('.pullUpLabel').innerHTML = 'Pull up to load more...';
-	                        }
-	                    },
-	                    onScrollMove: function () {
-	                        if (this.y > 5 && !pullDownEl.className.match('flip')) {
-	                            pullDownEl.className += ' flip';
-	                            pullDownEl.querySelector('.pullDownLabel').innerHTML = 'Release to refresh...';
-	                            this.minScrollY = 0;
-	                        } else if (this.y < 5 && pullDownEl.className.match('flip')) {
-	                            pullDownEl.className = 'pullDown';
-	                            pullDownEl.querySelector('.pullDownLabel').innerHTML = 'Pull down to refresh...';
-	                            this.minScrollY = -pullDownOffset;
-	                        } else if (this.y < (this.maxScrollY - 5) && !pullUpEl.className.match('flip')) {
-	                            pullUpEl.className += ' flip';
-	                            pullUpEl.querySelector('.pullUpLabel').innerHTML = 'Release to refresh...';
-	                            this.maxScrollY = this.maxScrollY;
-	                        } else if (this.y > (this.maxScrollY + 5) && pullUpEl.className.match('flip')) {
-	                            pullUpEl.className = 'pullDown';
-	                            pullUpEl.querySelector('.pullUpLabel').innerHTML = 'Pull up to load more...';
-	                            this.maxScrollY = pullUpOffset;
-	                        }
-	                    },
-	                    onScrollEnd: function () {
-	                        if (pullDownEl.className.match('flip')) {
-	                            pullDownEl.className += ' loading';
-	                            pullDownEl.querySelector('.pullDownLabel').innerHTML = 'Loading...';                
-	                            scope.pullDown();
-	                        } else if (pullUpEl.className.match('flip')) {
-	                            pullUpEl.className += ' loading';
-	                            pullUpEl.querySelector('.pullUpLabel').innerHTML = 'Loading...';                
-	                            scope.pullUp();
-	                        }
-	                    }
-	                }
-
-	                if( scope.pullRefresh && isDef(attr.pullDown) && isDef(attr.pullUp) ) angular.extend(options, refreshOption);
+				    console.log(attr.iscroll, 'iscroll options', options)
 
 	                angular.extend(iscroll.options, options);
 

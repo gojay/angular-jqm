@@ -1,7 +1,14 @@
-var docWidth = document.width;
+var docWidth;
 document.addEventListener('touchmove', function (e) { 
     e.preventDefault(); 
 }, false);
+function doOnOrientationChange(){
+    docWidth = document.width;
+    console.log(window.orientation, docWidth)
+}
+window.addEventListener('orientationchange', doOnOrientationChange);
+// Initial execution if needed
+doOnOrientationChange();
 
 var module = angular.module("app", ["jqm", "jqmCustom", "ngTouch"]);
 module
@@ -196,18 +203,15 @@ function ListTabCtrl(scope, $routeParams, $timeout, $compile){
     var x = 0;
 
     var loadTimeout = $routeParams.timeout ? $routeParams.timeout : 1000 ;
-
-    var swipeTabs,
-        pullDownEl, pullDownOffset,
-        pullUpEl, pullUpOffset,
-        generatedCount = 0;
+    var tabIscroll;
+    var generatedCount = tabIndex = oldY = 0;
 
     var ListiScroll = {
         init: function(){
             var wrapperWidth = 0;
 
-            // get object iscroll from directive
-            swipeTabs = angular.element('#tabWrapper').scope().iscroll;
+            // get object tab iscroll
+            tabIscroll = angular.element('#tabWrapper').scope().iscroll;
 
             updateLayout();
 
@@ -224,108 +228,156 @@ function ListTabCtrl(scope, $routeParams, $timeout, $compile){
                 $('.tabScroller').css('width', wrapperWidth * 3)
                     .find('.tab').css('width', wrapperWidth);
 
-                swipeTabs.refresh();
-                swipeTabs.scrollToPage(currentTab, 0, 0);
+                tabIscroll.refresh();
+                tabIscroll.scrollToPage(currentTab, 0, 0);
             }
         },
+        addData: function(index, until, last){
+            var last = scope.data[index].length ? scope.data[index][scope.data[index].length - 1] : 0 ;
+            for(var i = 1; i <= until; i++) {
+                if(last) 
+                    scope.data[index].push(last + i) 
+                else
+                    scope.data[index].unshift(last + i);
+            }
+        },
+        compileEl: function(scrollerId, i){
+            var li;
+            switch(scrollerId){
+                default:
+                    li = '<li jqm-li-link icon="ui-icon-arrow-r">Generated item '+ i +'</li>';
+                    break;
+                case 1:
+                    li = '<li jqm-li-link icon="ui-icon-arrow-r">'+
+                            '<h4 class="ui-li-heading">New Kitten '+ i +' </h4>'+
+                            '<p class="ui-li-desc">Description here..</p>'+
+                        '</li>';
+                    break;
+                case 2:
+                    li = '<li jqm-li-link icon="ui-icon-arrow-r">'+
+                            '<img src="http://placekitten.com/80/80" jqm-li-thumb />'+
+                            '<h4 class="ui-li-heading">New Kitten '+ i +'</h4>'+
+                            '<p class="ui-li-desc">Description here..</p>'+
+                            '<span jqm-li-count>44</span>'+
+                        '</li>';
+                    break;
+            }
+
+            var $liScope = $compile(angular.element(li))(scope);
+
+            scope.$apply();
+
+            return $liScope.get(0);
+        },
         get: function(){
+            // ambil element class tabActive
             var tabActive = angular.element('.tabActive');
-            // get wrapper id as iscroll id
+            tabIndex = tabActive.index();
+            // ambil ID children tabActive
             var scrollId = tabActive.children().get(0).id;
-            // get object iscroll from directive by scroll id
+            // ambil object iScroll dari element ID tersebut
             return angular.element('#'+scrollId).scope().iscroll;
         },
         handle: {
             tab: {
                 onScrollMove: function(){
-                    var calc = (swipeTabs.absDistX/docWidth*100/3);
-                    var left = (swipeTabs.dirX > 0) ? calc + x : x - calc ;
+                    var calc = (tabIscroll.absDistX / docWidth * 100);
+                    var left = (tabIscroll.distX < 0) ? calc + x : x - calc;
+
+                    // log
+                    // console.group('tab:onScrollMove');
+                    // console.log('distX', tabIscroll.distX);
+                    // console.log('absDistX', tabIscroll.absDistX);
+                    // console.log('left', left);
+                    // console.groupEnd();
+                    // end log
+
                     scope.barTranslate = {
-                        '-webkit-transform': 'translate('+left+'%, 0px)',
-                        'transform': 'translate('+left+'%, 0px)'
+                        '-webkit-transform': 'translate3d('+left+'%, 0, 0)',
+                        'transform': 'translate3d('+left+'%, 0, 0)'
                     };
                     scope.$apply();
                 },
                 onScrollEnd: function(){
-                    if(swipeTabs.absDistX) x = swipeTabs.currPageX * 100;
+                    x = tabIscroll.currPageX * 100;
 
                     angular.forEach(scope.tabs, function(tabs){
                         tabs.selected = false;
                     });
-                    scope.tabs[swipeTabs.currPageX].selected = true;
+                    scope.tabs[tabIscroll.currPageX].selected = true;
                     scope.barTranslate = {
-                        '-webkit-transform': 'translate('+x+'%, 0px)',
-                        'transform': 'translate('+x+'%, 0px)'
+                        '-webkit-transform': 'translate3d('+x+'%, 0, 0)',
+                        'transform': 'translate3d('+x+'%, 0, 0)'
                     };
                     scope.$apply();
                 }
             },
             page: {
-                onScrollMove: function(){
-                    var tabActive = $('.tabActive');
-                    // get wrapper id as iscroll id
-                    var scrollId = tabActive.children().get(0).id;
-                    // get object iscroll from directive by scroll id
-                    var iscroll  = angular.element('#'+scrollId).scope().iscroll;
-
-                    // if( iscroll.x ) e.preventDefault();
-
-                    console.log('onScrollMove', iscroll);
+                onBeforeScrollMove: function(){
+                    // ambil iscroll
+                    var thisIscroll = ListiScroll.get();
+                    // set old Y
+                    oldY = Math.abs(thisIscroll.y);
+                    // log
+                    // console.log('onBeforeScrollMove', thisIscroll.y)
                 },
+                onScrollMove: function(){
+                    // ambil iscroll
+                    var thisIscroll = ListiScroll.get();
+                    // disable tab iscroll, jika scrolling Y (position y bergerak melebihi old Y)
+                    if(oldY < Math.abs(thisIscroll.y)) tabIscroll.disable();
+                    // log
+                    // console.log('onScrollMove', oldY, Math.abs(thisIscroll.y), (oldY < Math.abs(thisIscroll.y)))
+                },
+                onBeforeScrollEnd: function(){
+                    // aktifkan tab iscroll stelah scrolling
+                    tabIscroll.enable();
+                    oldY = 0;
+                },
+                /* pull refresh */
                 pullDownAction: function(){
-                    var el = $('.tabActive'),
-                        index = el.index();
-
-                    // get wrapper id as iscroll id
-                    var scrollId = el.children().get(0).id;
-
-                    // get object iscroll from directive by scroll id
-                    var iscroll  = angular.element('#'+scrollId).scope().iscroll;
+                    var thisIscroll = ListiScroll.get();
 
                     $timeout(function(){ 
 
                         var li, i;
 
-                        for (i=0; i<3; i++) {
-                            li = compileEl(index, ++generatedCount);
-                            $('li:first-child',el).after(li);
-                        }
+                        // for (i=0; i<3; i++) {
+                        //     li = compileEl(index, ++generatedCount);
+                        //     $('li:first-child',el).after(li);
+                        // }
+                        ListiScroll.addData(tabIndex, 3,false);
 
-                        iscroll.refresh();
+                        thisIscroll.refresh();
 
                     }, 1000);
                 },
                 pullUpAction: function(){
-                    var el = $('.tabActive'),
-                        index = el.index();
-
-                    // get wrapper id as iscroll id
-                    var scrollId = el.children().get(0).id;
-
-                    // get object iscroll from directive by scroll id
-                    var iscroll  = angular.element('#'+scrollId).scope().iscroll;
+                    var thisIscroll = ListiScroll.get();
 
                     $timeout(function(){ 
                         var li, i;
 
-                        for (i=0; i<3; i++) {
-                            li = compileEl(index, ++generatedCount);
-                            $('ul',el).append(li);
-                        }
+                        // for (i=0; i<3; i++) {
+                        //     li = ListiScroll.compileEl(index, ++generatedCount);
+                        //     $('ul',el).append(li);
+                        // }
+                        ListiScroll.addData(tabIndex, 3,true);
 
-                        iscroll.refresh();
+                        thisIscroll.refresh();
                         
                     }, 1000);
                 },
+                /* infinite scroll */
                 infiniteScroll: function(){
-                    var iscroll  = angular.element('#wrapper1').scope().iscroll;
+                    var thisIscroll = ListiScroll.get();
 
-                    if( iscroll.y <= (iscroll.maxScrollY + 20) ){
+                    if( thisIscroll.y <= (thisIscroll.maxScrollY + 20) ){
                         scope.loading = true;
                         $timeout(function(){
-                            addData(10);
+                            ListiScroll.addData(tabIndex, 10,true);
                             $timeout(function(){ 
-                                iscroll.refresh();
+                                thisIscroll.refresh();
                                 scope.loading = false; 
                             });
                         }, 3000);
@@ -346,7 +398,13 @@ function ListTabCtrl(scope, $routeParams, $timeout, $compile){
         selected: false
     }];
 
-    scope.data = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20];
+    scope.data = [
+        [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20],
+        [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20],
+        [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]
+    ];
+
+    console.log('data', scope.data)
 
     scope.barTranslate = {};
 
@@ -359,48 +417,13 @@ function ListTabCtrl(scope, $routeParams, $timeout, $compile){
             tabs.selected = false;
         });
         scope.tabs[index].selected = true;
-        swipeTabs.scrollToPage(index, 0);
+        tabIscroll.scrollToPage(index, 0);
     };
 
     scope.tabIscroll  = ListiScroll.handle.tab;
     scope.pageIscroll = ListiScroll.handle.page;
 
     scope.loading = false;
-
-    function addData(until){
-        var last = scope.data.length ? scope.data[scope.data.length - 1] : 0 ;
-        for(var i = 1; i <= until; i++) {
-            scope.data.push(last + i);
-        }
-    }
-    function compileEl(scrollerId, i){
-        var li;
-        switch(scrollerId){
-            default:
-                li = '<li jqm-li-link icon="ui-icon-arrow-r">Generated item '+ i +'</li>';
-                break;
-            case 1:
-                li = '<li jqm-li-link icon="ui-icon-arrow-r">'+
-                        '<h4 class="ui-li-heading">New Kitten '+ i +' </h4>'+
-                        '<p class="ui-li-desc">Description here..</p>'+
-                    '</li>';
-                break;
-            case 2:
-                li = '<li jqm-li-link icon="ui-icon-arrow-r">'+
-                        '<img src="http://placekitten.com/80/80" jqm-li-thumb />'+
-                        '<h4 class="ui-li-heading">New Kitten '+ i +'</h4>'+
-                        '<p class="ui-li-desc">Description here..</p>'+
-                        '<span jqm-li-count>44</span>'+
-                    '</li>';
-                break;
-        }
-
-        var $liScope = $compile(angular.element(li))(scope);
-
-        scope.$apply();
-
-        return $liScope.get(0);
-    }
 
     $timeout(ListiScroll.init, loadTimeout);
 }

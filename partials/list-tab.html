@@ -65,31 +65,31 @@
                     <div class="tab" ng-class="{'tabActive':tabs[0].selected}">
                         <div iscroll="wrapper1" vertical="true"
                                 scroller-content-class="ui-scroller-content-infinite"
+                                infinite="true"
                                 on-scroll-end="pageIscroll.infiniteScroll()"
+                                on-before-scroll-move="pageIscroll.onBeforeScrollMove()"
                                 on-scroll-move="pageIscroll.onScrollMove()"
-                                pull-down="pageIscroll.pullDownAction()" 
-                                pull-up="pageIscroll.pullUpAction()">
+                                on-before-scroll-end="pageIscroll.onBeforeScrollEnd()">
                             <ul jqm-listview>
                                 <li jqm-li-divider jqm-theme="b">Infinite</li>
-                                <li ng-repeat="i in data | fb:f"
+                                <li ng-repeat="i in data[0]"
                                     jqm-li-link icon="ui-icon-arrow-r">
                                     List item {{i}}
                                 </li>
                             </ul>
-                            <div id="infinite-loading" class="pullUp loading" style="width:100%; margin:15px 0 0 -15px;">
-                                <span class="pullUpIcon"></span>
-                                <span class="pullUpLabel">Loading...</span>
-                            </div>
                         </div>
                     </div>
                     <div class="tab" ng-class="{'tabActive':tabs[1].selected}">
                         <div iscroll="wrapper2" bounce="true" vertical="true" 
-                                pull-refresh="true" 
-                                pull-down="pageIscroll.pullDownAction()" 
-                                pull-up="pageIscroll.pullUpAction()">
+                                scroller-content-class="ui-scroller-content-infinite"
+                                infinite="true"
+                                on-scroll-end="pageIscroll.infiniteScroll()"
+                                on-before-scroll-move="pageIscroll.onBeforeScrollMove()"
+                                on-scroll-move="pageIscroll.onScrollMove()"
+                                on-before-scroll-end="pageIscroll.onBeforeScrollEnd()">
                             <ul jqm-listview>
                                 <li jqm-li-divider jqm-theme="c">Pull Refresh</li>
-                                <li ng-repeat="i in [] | range:10 | fb:f"
+                                <li ng-repeat="i in data[1]"
                                     jqm-li-link icon="ui-icon-arrow-r">
                                     <h4 class="ui-li-heading">Kitten {{i}}</h4>
                                     <p class="ui-li-desc">Description here..</p>
@@ -99,12 +99,15 @@
                     </div>
                     <div class="tab" ng-class="{'tabActive':tabs[2].selected}">
                         <div iscroll="wrapper3" bounce="true" vertical="true" 
-                                pull-refresh="true" 
-                                pull-down="pageIscroll.pullDownAction()" 
-                                pull-up="pageIscroll.pullUpAction()">
+                                scroller-content-class="ui-scroller-content-infinite"
+                                infinite="true"
+                                on-scroll-end="pageIscroll.infiniteScroll()"
+                                on-before-scroll-move="pageIscroll.onBeforeScrollMove()"
+                                on-scroll-move="pageIscroll.onScrollMove()"
+                                on-before-scroll-end="pageIscroll.onBeforeScrollEnd()">
                             <ul jqm-listview>
                                 <li jqm-li-divider jqm-theme="d">Custom</li>
-                                <li ng-repeat="i in [] | range:10 | fb:f"
+                                <li ng-repeat="i in data[2]"
                                     jqm-li-link icon="ui-icon-arrow-r">
                                     <img src="http://placekitten.com/80/80" jqm-li-thumb />
                                     <h4 class="ui-li-heading">Kitten</h4>
