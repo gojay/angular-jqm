@@ -272,6 +272,7 @@ function ListTabCtrl(scope, $routeParams, $timeout, $compile){
         get: function(){
             // ambil element class tabActive
             var tabActive = angular.element('.tabActive');
+            // ambil index element tab
             tabIndex = tabActive.index();
             // ambil ID children tabActive
             var scrollId = tabActive.children().get(0).id;
