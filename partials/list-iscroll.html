@@ -1,6 +1,6 @@
 <div jqm-page>
     <div jqm-panel-container="state.openPanel">
-        <div class="ui-body-b">
+        <div class="ui-body-b" style="position: relative;">
             <div jqm-header>
                 <a jqm-button jqm-theme="b" href="#/" icon="ui-icon-home" buttonpos="left" shadow="true">Home</a>
                 <h1>iScroll Basic</h1>
@@ -8,7 +8,8 @@
                      icon="ui-icon-bars" iconpos="notext" buttonpos="right" shadow="false"
                      ng-click="state.openPanel='right'"></div>
             </div>
-            <div class="panel-content ui-content" style="height:100%;">
+            <div jqm-footer jqm-theme="a" style="height:40px"></div>
+            <div class="panel-content ui-content jqm-content-with-header jqm-content-with-footer">
                 <div iscroll="wrapper" vertical="true">
                     <ul jqm-listview>
                         <li ng-repeat="i in data"
@@ -16,7 +17,6 @@
                             List item {{i}}
                         </li>
                     </ul>
-                    <div style="height:40px"></div>
                 </div>
             </div>
         </div>
