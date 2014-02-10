@@ -1264,6 +1264,7 @@ jqmModule.directive('jqmLiActive', [function() {
   </file>
 </example>
  */
+var iscroll = null;
 jqmModule.directive('jqmListview', [function() {
     var isdef = angular.isDefined;
     return {
@@ -1274,11 +1275,20 @@ jqmModule.directive('jqmListview', [function() {
         scope: {
             inset: '@'
         },
-        link: function(scope, element, attr) {
+        require: '^?iscroll',
+        link: function(scope, element, attr, iscrollCtrl) {
             //We do this instead of '@' binding because "false" is actually truthy
             //And these default to true
-            scope.shadow = isdef(attr.shadow) ? (attr.shadow==='true') : true;
+            scope.shadow  = isdef(attr.shadow) ? (attr.shadow==='true') : true;
             scope.corners = isdef(attr.corners) ? (attr.corners==='true') : true;
+
+            setTimeout(function() {
+                if( iscrollCtrl ){
+                    console.log('iscrollCtrl', iscrollCtrl);
+                    iscrollCtrl.scope.onLoad();
+                }
+            });
+
         }
     };
 }]);
